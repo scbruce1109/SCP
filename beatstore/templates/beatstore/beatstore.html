@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block base_head %}
+<link rel="stylesheet" href='{% static "css/beatstore.css" %}'>
+<script src='{% static "js/beatstore.js" %}'></script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class='row'>
+<div class='col-12 text-align-center'>
+<h1>Beatstore</h1>
+</div>
+</div>
+
+<div class='beatstore-container mx-auto'>
+  <div id='cont-header' class='text-align-center'>
+    <h2 id='playlist-status'>stuff</h2>
+    </div>
+
+  <div id='content-wrapper'>
+  <div id='content'>
+
+    {% for obj in object_list %}
+      <div class='beat-item' beat='{{ obj.audio_file.url }}' title='{{ obj.title }}'>
+        <div class='row'>
+          <div class='col-6'>
+            {{ obj.title }}
+          </div>
+
+          <div class='col-6'>
+            {{ obj.bpm }}
+            </div>
+            </div>
+
+    </div>
+    {% endfor %}
+  </div>
+  </div>
+
+  <div id='cont-footer'>
+    <div id='controls-wrapper'>
+      <div id='controls' class='mx-auto'>
+
+        <div id='back' class='col-4'>
+          </div>
+
+          <div id='play-pause' class='col-4'>
+            </div>
+
+            <div id='forward' class='col-4'>
+              </div>
+              </div>
+
+              <div id='seekbar-container'>
+              <div id='slide-container'>
+                <div id='slider'>
+                </div>
+              </div>
+              </div>
+
+
+    </div>
+
+    <canvas id='visualiser'></canvas>
+
+
+  </div>
+  </div>
+
+{% endblock %}
