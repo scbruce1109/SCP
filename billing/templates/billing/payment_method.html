@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='col-10 col-md-6 mx-auto'>
+  <h1>Add Payment Method</h1>
+
+  <div class='stripe-payment-form' data-token="{{ publish_key }}" data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title="Add New Card"></div>
+
+</div>
+
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AUVtF6GSgMI3alWzJ8c96dTtzRijI4739uFTmTkA7faeOAcF039Vn4TMHTmHyO7v5tg7LUosCNBsm2kl">
+  </script>
+
+<div id="paypal-button-container"></div>
+
+<script>
+  function paypalOrderHandler(orderID) {
+    var orderIdEndpoint = '/billing/paypal-transaction-complete/'
+    var post_data = {
+      'order_id': orderID
+    }
+    $.ajax({
+      data: post_data,
+      url: orderIdEndpoint,
+      method: "POST",
+      success: function(data){
+        console.log("payapl thing successful")
+        console.log(orderID)
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+  }
+
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      // Set up the transaction
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '0.01'
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      // Capture the funds from the transaction
+      return actions.order.capture().then(function(details) {
+        // Show a success message to your buyer
+        alert('Transaction completed by ' + details.payer.name.given_name);
+        // Call your server to save the transaction
+        paypalOrderHandler(data.orderID)
+      });
+    }
+  }).render('#paypal-button-container');
+</script>
+
+{% endblock %}

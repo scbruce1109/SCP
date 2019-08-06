@@ -3,6 +3,8 @@ import os
 from django.db import models
 from django.db.models.signals import pre_save
 
+from splitcloud.utils import unique_slug_generator
+
 def get_filename_ext(filename):
     base_name = os.path.basename(filename)
     name, ext = os.path.splitext(base_name)
@@ -21,13 +23,13 @@ def upload_media_path(instance, filename):
             )
 
 
-class ProductQuerySet(models.query.QuerySet):
+class BeatQuerySet(models.query.QuerySet):
     def active(self):
         return self.filter(active=True)
 
 class BeatManager(models.Manager):
     def get_queryset(self):
-        return ProductQuerySet(self.model, using=self._db)
+        return BeatQuerySet(self.model, using=self._db)
 
     def all(self):
         return self.get_queryset().active()
@@ -39,6 +41,7 @@ class Beat(models.Model):
     active = models.BooleanField(default=True)
     cover_art = models.ImageField(upload_to=upload_media_path, null=True, blank=True)
     audio_file = models.FileField(upload_to=upload_media_path, null=True, blank=True)
+    slug = models.SlugField(blank=True, unique=True)
 
     objects = BeatManager()
 
@@ -57,5 +60,7 @@ class Beat(models.Model):
 def beat_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.has_audio():
         instance.active = False
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
 
 pre_save.connect(beat_pre_save_receiver, sender=Beat)

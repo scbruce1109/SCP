@@ -11,22 +11,38 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+with open("creds.json", "r") as creds:
+    creds = json.load(creds)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j3a@$l%94-wuiyjk02p08k7j^q!%h60se9%udhk&9-&9kz46yt'
+SECRET_KEY = creds.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'chpowell1210@gmail.com'
+EMAIL_HOST_PASSWORD = creds.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "Python ecommerce <chpowell1210@gmail.com>"
+BASE_URL = "127.0.0.1:8000"
+
+MANAGERS = (
+    ('Steve', 'chpowell1210@gmail.com'),
+)
+
+ADMINS = MANAGERS
 
 # Application definition
 
@@ -39,9 +55,35 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # my apps
+    'accounts',
+    'addresses',
+    'analytics',
     'beatstore',
+    'billing',
+    'carts',
+    'marketing',
+    'orders',
+    'products',
+    'search',
+    'tags',
 
 ]
+
+AUTH_USER_MODEL = 'accounts.User' # changes built-in user model to ours
+LOGIN_URL = '/login/'
+LOGIN_URL_REDIRECT = '/'
+LOGOUT_URL = '/logout/'
+LOGOUT_REDIRECT_URL = '/login'
+
+MAILCHIMP_API_KEY = creds.get('MAILCHIMP_API_KEY')
+MAILCHIMP_DATA_CENTER = "us20"
+MAILCHIMP_EMAIL_LIST_ID = creds.get('MAILCHIMP_EMAIL_LIST_ID')
+
+FORCE_SESSION_TO_ONE = False
+FORCE_INACTIVE_USER_ENDSESSION = False
+
+STRIPE_PUB_KEY = creds.get('STRIPE_PUB_KEY', 'pk_test_NDDVONYz0ZEtqGhrmOtnDKxw')
+STRIPE_SECRET_KEY = creds.get('STRIPE_SECRET_KEY', 'sk_test_HAJZxFu1o25Igf8UvjOyI2ZK')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,6 +163,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_MODE = "local"
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -131,3 +175,9 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "static_root
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
+
+PROTECTED_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "protected_media")
+
+# from splitcloud.AWS.conf import *
+# AWS_ACCESS_KEY_ID = creds.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = creds.get('AWS_SECRET_ACCESS_KEY')
