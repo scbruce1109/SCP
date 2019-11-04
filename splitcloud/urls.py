@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 
-from .views import home_page
+from .views import home_page, new_home, NewHomeList
 from accounts.views import LoginView, RegisterView, GuestRegisterView
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 from analytics.views import SalesView, SalesAjaxView
@@ -33,6 +33,8 @@ from django.conf.urls import url
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page, name='home'),
+    path('new/', new_home, name='new-home'),
+    path('new-list/', NewHomeList.as_view(), name='new-list'),
     path('account/', include(("accounts.urls", 'accounts'), namespace='account')),
     path('accounts/', include("accounts.passwords.urls")),
     path('analytics/sales/', SalesView.as_view(), name='sales-analytics'),

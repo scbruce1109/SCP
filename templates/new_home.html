@@ -1,0 +1,70 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Base Template</title>
+    <link rel='stylesheet' href="{% static 'css/new.css' %}">
+    <link rel='stylesheet' href="{% static 'css/base.css' %}">
+
+    {% block base_head %}{% endblock %}
+  </head>
+
+  <body>
+    <div class='header'>
+      </div>
+
+<div class='cont'>
+  <div class='first'>
+
+  <div class='nav-item'>Beats</div>
+  <div class='nav-item'>Tools</div>
+  <div class='nav-item'>Services</div>
+  <div class='nav-item'>About</div>
+  <div class='nav-item'>Contact</div>
+  <div class='nav-item'>Account</div>
+</div>
+
+<div class='second'>
+<div id='viewport'>
+  <canvas id='visualiser'></canvas>
+</div>
+
+<div id='controls-wrapper'>
+<div id='controls' class='mx-auto'>
+  <div id='back-btn'></div>
+  <div id='play-pause-btn'></div>
+  <div id='fwd-btn'></div>
+  </div>
+
+  <div id='seekbar-container'>
+    <div id='slide-container'>
+      <div id='slider'>
+        </div>
+        </div>
+        </div>
+
+        </div>
+
+    </div>
+
+
+  <div class='third'>
+    <div id='beat-header'>
+      <h2>Beats</h2>
+    </div>
+    <div id='beat-content'>
+      </div>
+    </div>
+
+</div>
+
+<div class='footer'>
+  </div>
+
+  </body>
+
+  </html>

@@ -142,7 +142,7 @@ function hey(){
     }
 
     function initMp3Player(){
-      console.log('squuuiiirrf')
+      // console.log('squuuiiirrf')
       context = new AudioContext(); // AudioContext object instance  Look up how this works in chrome https://goo.gl/7K7WLu
       analyser = context.createAnalyser(); // AnalyserNode method
       canvas = document.getElementById('visualiser');
