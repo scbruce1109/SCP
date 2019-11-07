@@ -9,6 +9,7 @@
     <title>Base Template</title>
     <link rel='stylesheet' href="{% static 'css/new.css' %}">
     <link rel='stylesheet' href="{% static 'css/base.css' %}">
+    <script src='{% static "js/new_home.js" %}'></script>
 
     {% block base_head %}{% endblock %}
   </head>
@@ -57,12 +58,28 @@
       <h2>Beats</h2>
     </div>
     <div id='beat-content'>
+      {% for obj in object_list %}
+      <div class='beat-item' beat='{{ obj.audio_file.url }}' title='{{ obj.title }}'>
+        <div class='row'>
+          <div class='col-1'><a class='play-track-btn' beat='{{ obj.audio_file.url }}'>PP</a></div>
+          <div class='col-5'>
+            {{ obj.title }}
+          </div>
+
+          <div class='col-6'>
+            {{ obj.bpm }}
+            </div>
+            </div>
+
+          </div>
+          {% endfor %}
       </div>
     </div>
 
 </div>
 
 <div class='footer'>
+  <h2 id='playlist-status'></h2>
   </div>
 
   </body>
