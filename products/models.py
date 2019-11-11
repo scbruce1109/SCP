@@ -76,6 +76,7 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     is_digital = models.BooleanField(default=False) # User Library
     is_beat = models.BooleanField()
+    
 
 
     objects = ProductManager()

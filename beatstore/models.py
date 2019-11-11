@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 
 from splitcloud.utils import unique_slug_generator
+from products.models import Product
 
 def get_filename_ext(filename):
     base_name = os.path.basename(filename)
@@ -42,6 +43,9 @@ class Beat(models.Model):
     cover_art = models.ImageField(upload_to=upload_media_path, null=True, blank=True)
     audio_file = models.FileField(upload_to=upload_media_path, null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True)
+    standard = models.ForeignKey(Product, blank=True, null=True, related_name='standard_lease', on_delete=models.PROTECT)
+    trackout = models.ForeignKey(Product, blank=True, null=True, related_name='trackout_lease', on_delete=models.PROTECT)
+    unlimited = models.ForeignKey(Product, blank=True, null=True, related_name='unlimited_lease', on_delete=models.PROTECT)
 
     objects = BeatManager()
 
