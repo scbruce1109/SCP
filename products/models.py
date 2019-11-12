@@ -30,6 +30,10 @@ def upload_media_path(instance, filename):
             )
 
 
+
+
+
+
 class ProductQuerySet(models.query.QuerySet):
     def active(self):
         return self.filter(active=True)
@@ -76,7 +80,7 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     is_digital = models.BooleanField(default=False) # User Library
     is_beat = models.BooleanField()
-    
+
 
 
     objects = ProductManager()
@@ -166,3 +170,52 @@ class ProductFile(models.Model):
 
     def get_download_url(self):
         return reverse("products:download", kwargs={"slug": self.product.slug, "pk": self.pk})
+
+
+
+############## Beat Stuff
+
+class BeatQuerySet(models.query.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+class BeatManager(models.Manager):
+    def get_queryset(self):
+        return BeatQuerySet(self.model, using=self._db)
+
+    def all(self):
+        return self.get_queryset().active()
+
+class Beat(models.Model):
+    title = models.CharField(max_length=120)
+    filename = models.CharField(max_length=120)
+    bpm = models.CharField(max_length=5, null=True, blank=True)
+    active = models.BooleanField(default=True)
+    cover_art = models.ImageField(upload_to=upload_media_path, null=True, blank=True)
+    audio_file = models.FileField(upload_to=upload_media_path, null=True, blank=True)
+    slug = models.SlugField(blank=True, unique=True)
+    standard = models.ForeignKey(Product, blank=True, null=True, related_name='standard_lease', on_delete=models.PROTECT)
+    trackout = models.ForeignKey(Product, blank=True, null=True, related_name='trackout_lease', on_delete=models.PROTECT)
+    unlimited = models.ForeignKey(Product, blank=True, null=True, related_name='unlimited_lease', on_delete=models.PROTECT)
+
+    objects = BeatManager()
+
+    def __str__(self):
+        return self.title
+
+    def get_mp3_url(self):
+        return 'media/' + self.filename
+
+    def has_audio(self):
+        if self.audio_file:
+            return True
+        return False
+
+
+def beat_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.has_audio():
+        instance.active = False
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(beat_pre_save_receiver, sender=Beat)

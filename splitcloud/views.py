@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.contrib.auth import authenticate, login, get_user_model
 
-from beatstore.models import Beat
+from products.models import Beat
 
 
 def home_page(request):

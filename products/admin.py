@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Product, ProductFile
+from .models import Product, ProductFile, Beat
 
 
 class ProductFileInline(admin.TabularInline):
@@ -15,3 +15,5 @@ class ProductAdmin(admin.ModelAdmin):
         model = Product
 
 admin.site.register(Product, ProductAdmin)
+
+admin.site.register(Beat)
