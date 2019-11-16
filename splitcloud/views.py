@@ -4,6 +4,7 @@ from django.views.generic import ListView
 from django.contrib.auth import authenticate, login, get_user_model
 
 from products.models import Beat
+from carts.models import Cart
 
 
 def home_page(request):
@@ -26,11 +27,13 @@ def new_home(request):
     return render(request, "new_home.html", context)
 
 
-class NewHomeList(ListView):
+class BeatStoreView(ListView):
     queryset = Beat.objects.all()
     template_name = "new_home.html"
 
     def get_context_data(self, *args, **kwargs):
-        context = super(NewHomeList, self).get_context_data(*args, **kwargs)
+        context = super(BeatStoreView, self).get_context_data(*args, **kwargs)
+        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
         print(context)
         return context

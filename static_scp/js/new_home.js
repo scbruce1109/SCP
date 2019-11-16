@@ -162,7 +162,7 @@ function hey(){
       source.connect(analyser);
       analyser.connect(context.destination);
       frameLooper();
-      conosole.log('grrrrr')
+      console.log('grrrrr')
     }
 
     initMp3Player();
@@ -176,6 +176,15 @@ function hey(){
 window.addEventListener("load", () => {
   hey();
   initAudioPlayer();
+  cartStuff();
+
+
+
+
+
+
+
+
 })
 
 
@@ -192,6 +201,33 @@ function frameLooper(){
     bar_height = -(fbc_array[i] / 2);
     //  fillRect( x, y, width, height ) // Explanation of the parameters below
     ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
-    console.log('wooop')
+    // console.log('wooop')
   }
+}
+
+
+// Cart stuff
+function cartStuff() {
+console.log('spewww');
+var cartBtnArray = document.getElementsByClassName("beat-modal-btn");
+console.log(cartBtnArray);
+var modal = document.getElementById("product-modal");
+var span = document.getElementById("close");
+
+Array.prototype.forEach.call(cartBtnArray, function(btn) {
+btn.addEventListener("click", function() {
+    // audio.src = btn.getAttribute('beat');
+    var stdInput = document.getElementById('standard').getElementsByClassName('product-form-input')[0]
+    var trackoutInput = document.getElementById('trackout').getElementsByClassName('product-form-input')[0]
+    var premiumInput = document.getElementById('premium').getElementsByClassName('product-form-input')[0]
+    stdInput.setAttribute('value', btn.getAttribute('standard'));
+    trackoutInput.setAttribute('value', btn.getAttribute('trackout'));
+    premiumInput.setAttribute('value', btn.getAttribute('unlimited'));
+    modal.style.display = "block";
+});
+});
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
 }

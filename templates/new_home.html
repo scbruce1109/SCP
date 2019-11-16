@@ -31,7 +31,64 @@
 
 <div class='second'>
 <div id='viewport'>
+  <div id="visualiser-cont">
   <canvas id='visualiser'></canvas>
+</div>
+  <div id='product-modal'>
+    <div class='row'>
+    <span id="close">&times;</span>
+  </div>
+    <div class='row'>
+      <div class='col-4'>
+        <div class='lease-btn' id='standard' beat-id=''>
+          <form class='form-product-ajax' method='POST' action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}' class="form" {% if request.user.is_authenticated %}data-user='abc'{% endif %}>{% csrf_token %}
+            <input class='product-form-input' type='hidden' name='product_id' value='8' {% if product.is_digital %}data-is-digital='true'{% endif %}/>
+            <span class='submit-span'>
+            {% if product in cart.products.all %}
+              <div class='btn-group'><a class='btn btn-link' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div>
+              {% else %}
+                <button type='submit' class='btn btn-success'>Add to cart</button>
+              {% endif %}
+              </span>
+
+          </form>
+        </div>
+      </div>
+
+      <div class='col-4'>
+        <div class='lease-btn' id='trackout' beat-id=''>
+          <form class='form-product-ajax' method='POST' action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}' class="form" {% if request.user.is_authenticated %}data-user='abc'{% endif %}>{% csrf_token %}
+            <input class='product-form-input' type='hidden' name='product_id' value='8' {% if product.is_digital %}data-is-digital='true'{% endif %}/>
+            <span class='submit-span'>
+            {% if product in cart.products.all %}
+              <div class='btn-group'><a class='btn btn-link' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div>
+              {% else %}
+                <button type='submit' class='btn btn-success'>Add to cart</button>
+              {% endif %}
+              </span>
+
+          </form>
+        </div>
+      </div>
+
+      <div class='col-4'>
+        <div class='lease-btn' id='premium' beat-id=''>
+          <form class='form-product-ajax' method='POST' action='{% url "cart:update" %}' data-endpoint='{% url "cart:update" %}' class="form" {% if request.user.is_authenticated %}data-user='abc'{% endif %}>{% csrf_token %}
+            <input class='product-form-input' type='hidden' name='product_id' value='8' {% if product.is_digital %}data-is-digital='true'{% endif %}/>
+            <span class='submit-span'>
+            {% if product in cart.products.all %}
+              <div class='btn-group'><a class='btn btn-link' href='/cart/'>In cart</a> <button type='submit' class='btn btn-link'>Remove?</button></div>
+              {% else %}
+                <button type='submit' class='btn btn-success'>Add to cart</button>
+              {% endif %}
+              </span>
+
+          </form> 
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <div id='controls-wrapper'>
@@ -66,9 +123,15 @@
             {{ obj.title }}
           </div>
 
-          <div class='col-6'>
-            {{ obj.bpm }}
+          <div class='col-5'>
+            {{ obj.standard.id }}
             </div>
+
+          <div class='col-1'>
+            <div class="beat-modal-btn" standard='{{ obj.standard.id }}' trackout='{{ obj.trackout.id }}' unlimited='{{ obj.unlimited.id }}'><p>O</p>
+
+            </div>
+          </div>
             </div>
 
           </div>
