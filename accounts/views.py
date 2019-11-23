@@ -82,7 +82,7 @@ class AccountEmailActivateView(FormMixin, View):
 
 class GuestRegisterView(NextUrlMixin, RequestFormAttachMixin, CreateView):
     form_class = GuestForm
-    default_next = '/register/'
+    default_next = '/cart/checkout/'
 
     def get_success_url(self):
         return self.get_next_url()

@@ -1,15 +1,24 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block base_head %}
+<link rel='stylesheet' href="{% static 'css/checkout.css' %}">
+{% endblock %}
 
 {% block content %}
-{{ object.order_id }} -- {{ object.cart }}
 
-{% if not billing_profile %}
+
+<div id='main-cont'>
   <div class='row text-center'>
-  <div class='col-12 col-md-6'>
-    <p class='lead'>Login</p>
+    <div class='col-12 col-md-6'>
+  {{ object.order_id }} -- {{ object.cart }}
+
+  <div class='row text-center'>
+  <div class='col-12 col-md-12'>
+    <p class='lead'>Information</p>
     {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
   </div>
-  <div class='col-12 col-md-6'>
+  <div class='col-12'>
     Continue as guest
 
     {% url "guest_register" as guest_register_url %}
@@ -17,8 +26,7 @@
   </div>
   </div>
 
-{% else %}
-  {% if not object.shipping_address and shipping_address_required %}
+
 
   <div class='row'>
     <div class='col-12'>
@@ -37,7 +45,7 @@
     </div>
     </div>
 
-  {% elif not object.billing_address %}
+
   <div class='row'>
     <div class='col-md-6 mx-auto col-10'>
       <p class='lead'>Billing Address</p>
@@ -52,7 +60,7 @@
     </div>
     </div>
 
-  {% else %}
+
       {% if not has_card %}
         <div class='stripe-payment-form' data-token="{{ publish_key }}" data-next-url='{{ request.build_absolute_uri }}' data-btn-title="Add Payment Method"></div>
 
@@ -68,9 +76,14 @@
         <form class='form' method='POST' action="">{% csrf_token %}
           <button type='submit' class='btn btn-success'>Checkout</button>
         </form>
-      {% endif %}
-  {% endif %}
-{% endif %}
 
+{% endif %}
+</div>
+
+<div class='col-12 col-md-6'>
+  <p>scoooop</p>
+</div>
+</div>
+</div>
 
 {% endblock %}
