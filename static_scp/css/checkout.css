@@ -1,6 +1,15 @@
 #main-cont {
-  background-color: pink;
+  /* background-color: pink; */
   opacity: 50%;
   height: 100%;
   width: 100%;
+}
+
+.checkout-info {
+  background-color: lightblue;
+  margin: 10px;
+}
+
+#login-form {
+  display: none;
 }

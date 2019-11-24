@@ -3,6 +3,7 @@
 
 {% block base_head %}
 <link rel='stylesheet' href="{% static 'css/checkout.css' %}">
+<script src='{% static "js/checkout.js" %}'></script>
 {% endblock %}
 
 {% block content %}
@@ -10,27 +11,59 @@
 
 <div id='main-cont'>
   <div class='row text-center'>
+
+
+
     <div class='col-12 col-md-6'>
-  {{ object.order_id }} -- {{ object.cart }}
+      {{ object.order_id }} -- {{ object.cart }}
 
-  <div class='row text-center'>
-  <div class='col-12 col-md-12'>
-    <p class='lead'>Information</p>
-    {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
+      <div class='row text-center checkout-info'>
+        <p class='lead'>Information</p>
+
+        {% if billing_profile %}
+        <div class='row' id='info-display'>
+          <div class='col-12'>
+            <p>Email: {{ billing_profile.email }}</p>
+            <p id='info-edit-btn' style='float:right'>Edit</p>
+          </div>
+        </div>
+        {% endif %}
+
+        <div id='info-forms' style='display:{% if billing_profile %}none{% endif %}'>
+
+          <div class='col-12' id='guest-register-form'>
+            {% url "guest_register" as guest_register_url %}
+            <form method='POST' action='{{ guest_register_url }}'> {% csrf_token %}
+              <input type='hidden' name='next' value='{{ request.build_absolute_uri }}' />
+              <div class='col-12'>
+              {{ guest_form }}
+              </div>
+              <p>Already have an account? <b id='login-btn'>Sign in</b></p>
+              <button type='submit' class='btn btn-default' style='width:100%;'>Continue</button>
+            </form>
+          </div>
+
+          <div class='col-12 col-md-12' id='login-form'>
+            <form method='POST' action='{{ guest_register_url }}'> {% csrf_token %}
+              <input type='hidden' name='next' value='{{ request.build_absolute_uri }}' />
+              <div class='col-12'>
+                {{ login_form }}
+              </div>
+              <p id='guest-register-btn'>Back</p>
+              <button type='submit' class='btn btn-default' style='width:100%;'>Continue</button>
+            </form>
+          </div>
+
+        </div>
+
+
   </div>
-  <div class='col-12'>
-    Continue as guest
-
-    {% url "guest_register" as guest_register_url %}
-    {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
-  </div>
-  </div>
 
 
-
-  <div class='row'>
-    <div class='col-12'>
-      <p class='lead'>Shipping Address</p>
+{% if shipping_address_required %}
+  <div class='row checkout-info'>
+    <div class='col-12' id=>
+      <p class='lead'>Shipping Information</p>
       <hr/>
       </div>
 
@@ -44,28 +77,106 @@
 
     </div>
     </div>
+    {% endif %}
 
 
-  <div class='row'>
-    <div class='col-md-6 mx-auto col-10'>
-      <p class='lead'>Billing Address</p>
+  <div class='row checkout-info'>
+    <div class='col-12' id='payment-info'>
+      <div class='row'>
+        <div class='col-12'>
+      <p class='lead'>Payment Information</p>
       <hr/>
-    {% url "checkout_address_create" as checkout_address_create %}
-    {% include 'addresses/snippets/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}
+      </div>
+      </div>
 
-    </div>
-    <div class='col-6'>
+      <div class='row'>
+      <div class='col-12' id='payment-forms' style='display:{% if billing_profile %}block{% else %}none{% endif %}'>
+
+        <div class='row'>
+          <div class='col-12'>
+        {% if object.billing_address %}
+          <div class='row' id='billing-address-display'>
+            <div class='col-12'>
+            <div class='row'>
+              <div class='col-11'><b>Billing Address</b></div>
+              <div class='col-1' id='billing-address-edit-btn'>Edit</div>
+            </div>
+
+            <div class='row'>
+              <p>{{ object.billing_address.address_line_1 }}</p>
+            </div>
+          </div>
+          </div>
+          {% endif %}
+
+        <div class='row' id='billing-address-form' style='display:{% if object.billing_address %}none{% endif %}'>
+          <div class='col-12'>
+          {% url "checkout_address_create" as checkout_address_create %}
+          {% include 'addresses/snippets/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}
+          </div>
+        </div>
+
+        </div>
+        </div>
+
+    <!-- <div class='col-6'>
     {% url 'checkout_address_reuse' as checkout_address_reuse %}
     {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}
-    </div>
-    </div>
+    </div> -->
+
+      <div class='row'>
+        <div class='col-12'><b>Payment Method</b></div>
+      </div>
+
+      <div class='row' id='payment-form'  style='display:{% if not object.billing_address or has_card %}none{% endif %}'>
+        <div class='col-12'>
+          <div class='stripe-payment-form' data-token="{{ publish_key }}" data-next-url='{{ request.build_absolute_uri }}' data-btn-title="Add Payment Method"></div>
+        </div>
+      </div>
+
+      {% if has_card %}
+      <div class='row' id='payment-display'>
+        <div class='col-12'>
+          <p>{{ billing_profile.default_card }}</p>
+          <p id='payment-edit-btn'>Edit</p>
+          </div>
+      </div>
+      {% endif %}
+
+      </div>
+      </div>
+      </div>
+
+      </div>
+    
+
+      <div class='row checkout-info'>
+        <div class='col-12'>
+          <p class='lead'>Confirmation</p>
+          </div>
+
+          <div class='col-12' id='confirm-purchase' style='display:{% if has_card %}block{% else %}none{% endif %}'>
+            <div class='row'>
+              <div class='col-12'>
+                <p>Review your information and purchase</p>
+            </div>
+            </div>
+
+            <div class='row'>
+            <div class='col-12'>
+              <form class='form' method='POST' action="">{% csrf_token %}
+                <button type='submit' class='btn btn-success'>Purchase</button>
+              </form>
+              </div>
+              </div>
+              </div>
+
+          </div>
+          </div>
 
 
-      {% if not has_card %}
-        <div class='stripe-payment-form' data-token="{{ publish_key }}" data-next-url='{{ request.build_absolute_uri }}' data-btn-title="Add Payment Method"></div>
 
-      {% else %}
-        <h1>Finalize Checkout</h1>
+        <!-- <h1>Finalize Checkout</h1>
         <p>Cart Items: {% for product in object.cart.products.all %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
         <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
         <p>Billing Address: {{ object.billing_address.get_address }}</p>
@@ -75,10 +186,10 @@
         <p>Order Total: {{ object.total }}</p>
         <form class='form' method='POST' action="">{% csrf_token %}
           <button type='submit' class='btn btn-success'>Checkout</button>
-        </form>
+        </form> -->
 
-{% endif %}
-</div>
+
+
 
 <div class='col-12 col-md-6'>
   <p>scoooop</p>
