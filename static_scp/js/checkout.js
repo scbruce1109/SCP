@@ -51,6 +51,28 @@ function billingAddressToggle() {
 
 }
 
+function paymentMethodSwitch() {
+  var creditCardBtn = document.getElementById('credit-card-btn');
+  var paypalBtn = document.getElementById('paypal-btn');
+  var creditCardCont = document.getElementById('stripe-container');
+  var paypalCont = document.getElementById('paypal-container');
+
+  creditCardBtn.addEventListener('click', function() {
+    creditCardCont.style.display='block';
+    paypalCont.style.display = 'none';
+    creditCardBtn.className += ' active-txt';
+    paypalBtn.classList.remove('active-txt');
+  })
+
+  paypalBtn.addEventListener('click', function() {
+    creditCardCont.style.display='none';
+    paypalCont.style.display = 'block';
+    paypalBtn.className += ' active-txt';
+    creditCardBtn.classList.remove('active-txt');
+  })
+
+}
+
 // function paymentMethodEdit() {
 //   var paymentEditBtn = document.getElementById('payment-edit-btn');
 //   var paymentForm = document.getElementById('payment-form');
@@ -68,6 +90,6 @@ window.addEventListener("load", () => {
   userFormToggle();
   userInfoToggle();
   billingAddressToggle();
-  paymentMethodEdit();
+  paymentMethodSwitch();
 
 })

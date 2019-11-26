@@ -13,3 +13,7 @@
 #login-form {
   display: none;
 }
+
+.active-txt {
+  color: red;
+}

@@ -130,8 +130,27 @@
 
       <div class='row' id='payment-form'  style='display:{% if not object.billing_address or has_card %}none{% endif %}'>
         <div class='col-12'>
-          <div class='stripe-payment-form' data-token="{{ publish_key }}" data-next-url='{{ request.build_absolute_uri }}' data-btn-title="Add Payment Method"></div>
+
+        <div class='row'>
+          <div class='col-6' id='credit-card-btn'>Credit Card</div>
+          <div class='col-6' id='paypal-btn'>Paypal</div>
+          </div>
+
+
+        <div class='row' id='stripe-container'>
+          <div class='col-12'>
+            <div class='stripe-payment-form' data-token="{{ publish_key }}" data-next-url='{{ request.build_absolute_uri }}' data-btn-title="Add Payment Method"></div>
+          </div>
+          </div>
+
+
+          <div class='row' id='paypal-container' style='display:none;'>
+          <div class='col-12' >
+            <div id="paypal-button-container" class='mx-auto' style=''></div>
+          </div>
         </div>
+
+      </div>
       </div>
 
       {% if has_card %}
@@ -143,12 +162,13 @@
       </div>
       {% endif %}
 
-      </div>
+
       </div>
       </div>
 
       </div>
-    
+      </div>
+
 
       <div class='row checkout-info'>
         <div class='col-12'>
@@ -197,4 +217,10 @@
 </div>
 </div>
 
+
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AUVtF6GSgMI3alWzJ8c96dTtzRijI4739uFTmTkA7faeOAcF039Vn4TMHTmHyO7v5tg7LUosCNBsm2kl">
+  </script>
+
+<script src='{% static "js/paypal_stuff.js" %}'></script>
 {% endblock %}
