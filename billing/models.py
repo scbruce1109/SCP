@@ -51,6 +51,7 @@ class BillingProfile(models.Model):
     active      = models.BooleanField(default=True)
     timestamp   = models.DateTimeField(auto_now=True)
     update      = models.DateTimeField(auto_now_add=True)
+    is_paypal   = models.BooleanField(default=False)
     customer_id = models.CharField(max_length=120, null=True, blank=True)
     # customer_id in Stripe or Braintree
 
