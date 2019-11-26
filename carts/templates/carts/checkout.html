@@ -212,8 +212,10 @@
 
 
 <div class='col-12 col-md-6'>
-  <p>scoooop</p>
-</div>
+  <div id='checkout-info-cont' class='col-12 col-md-4' style='background-color:lightblue'>
+    {% include 'carts/snippets/cart-display.html' with cart=object.cart %}
+
+    </div></div>
 </div>
 </div>
 
@@ -222,5 +224,5 @@
     src="https://www.paypal.com/sdk/js?client-id=AUVtF6GSgMI3alWzJ8c96dTtzRijI4739uFTmTkA7faeOAcF039Vn4TMHTmHyO7v5tg7LUosCNBsm2kl">
   </script>
 
-<script src='{% static "js/paypal_stuff.js" %}'></script>
+<script src='{% static "js/paypal-stuff.js" %}'></script>
 {% endblock %}
