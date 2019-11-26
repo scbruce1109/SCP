@@ -4,6 +4,9 @@
 <div class='col-6 mx-auto py-5 text-center'>
 
   <h1 class='display-1'>Thank you for your order</h1>
+  {% for product in product_list %}
+    <p>{{ product.name }}
+      {% endfor %}
   </div>
 
 {% endblock %}

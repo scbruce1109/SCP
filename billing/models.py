@@ -32,6 +32,19 @@ class BillingProfileManager(models.Manager):
         return obj, created
 
 
+    def paypal_new_or_get(self, order_details):
+        payer = order_details.get('payer')
+        email = payer.get('email_address')
+        payer_id = payer.get('payer_id')
+        if payer is not None and email is not None:
+            obj, created = self.model.objects.get_or_create(
+                            email=email,
+                            is_paypal=True,
+                            customer_id=payer_id,
+            )
+        return obj, created
+
+
 class BillingProfile(models.Model):
     user        = models.OneToOneField(User, on_delete=models.PROTECT, null=True, blank=True)
     email       = models.EmailField()

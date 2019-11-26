@@ -113,6 +113,7 @@ def checkout_home(request):
                 if not billing_profile.user:
                     billing_profile.set_cards_inactive()
                 print('wooop')
+                request.session['order_id'] = order_obj.order_id
                 return redirect("cart:success")
             else:
                 print(crg_msg)
@@ -133,6 +134,77 @@ def checkout_home(request):
     return render(request, "carts/checkout.html", context)
 
 
+def paypal_transaction_complete_view(request):
+    if request.method == "POST" and request.is_ajax():
+        cart_obj, cart_created = Cart.objects.new_or_get(request)
+        order_obj = None
+        if cart_created or cart_obj.products.count() == 0:
+            return redirect("cart:home")
+
+        order_id = request.POST.get('order_id')
+        if order_id is not None:
+            order_details = get_order_details(order_id)
+            id = order_details.get('id')
+            status = order_details.get('status')
+
+            billing_profile, billing_profile_created = BillingProfile.objects.paypal_new_or_get(order_details)
+
+            if billing_profile is not None:
+                order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
+                if id is not None:
+                    order_obj.order_id = id
+                    order_obj.save()
+
+                if status == 'COMPLETED':
+                    order_obj.status = 'paid'
+                    order_obj.save()
+                    request.session['cart_items'] = 0
+                    request.session['order_id'] = id
+                    del request.session['cart_id']
+                    return JsonResponse({"message": "Success!"})
+                else:
+                    print('something happend')
+
+
+            # print(status)
+            # print(email)
+            # print(first_name)
+
+
+    return HttpResponse("error", status_code=401)
+
+
 
 def checkout_done_view(request):
-    return render(request, "carts/checkout-done.html", {})
+    if request.session['order_id']:
+        id = request.session['order_id']
+        qs = Order.objects.all().by_id(id)
+        order_obj = qs.first()
+        email = order_obj.billing_profile.email
+        cart_obj = order_obj.cart
+        product_list = cart_obj.products.all()
+        context = {
+            "product_list": product_list,
+        }
+        print('order successful')
+
+        # txt_ = get_template("transactional/emails/order.txt").render(context)
+        # html_ = get_template("transactional/emails/order.html").render(context)
+        # subject = 'Your order'
+        # from_email = settings.DEFAULT_FROM_EMAIL
+        # recipient_list = [email]
+        # sent_mail = send_mail(
+        #             subject,
+        #             txt_,
+        #             from_email,
+        #             recipient_list,
+        #             html_message=html_,
+        #             fail_silently=False,
+        #             )
+        # if sent_mail:
+        #     print('email sent beeeeetch')
+
+
+        return render(request, "carts/checkout-done.html", {})
+    else:
+        return redirect("cart:checkout")
