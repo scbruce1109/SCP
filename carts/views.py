@@ -8,10 +8,14 @@ from accounts.models import GuestEmail
 from addresses.forms import AddressForm
 from addresses.models import Address
 
+from billing.utils import get_paypal_token, get_order_details
 from billing.models import BillingProfile
 from orders.models import Order
 from products.models import Product
 from .models import Cart
+
+from django.core.mail import send_mail
+from django.template.loader import get_template
 
 import stripe
 STRIPE_PUB_KEY = getattr(settings, 'STRIPE_PUB_KEY', 'pk_test_NDDVONYz0ZEtqGhrmOtnDKxw')

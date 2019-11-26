@@ -1,0 +1,47 @@
+<div class='row' style='height:25%'>
+  </div>
+<div id='middle-content' style='width:100%;height:50%'>
+
+
+  {% for product in cart.products.all %}
+  <div class='row'>
+    <div class='col-6'>
+    <a href='{{ product.get_absolute_url }}'>{{ product.title }}</a>
+    {% include 'carts/snippets/remove-product.html' with product_id=product.id %}
+    </div>
+
+    <div class='col-6' style='text-align:right'>
+    ${{ product.price }}
+  </div>
+  </div>
+  {% endfor %}
+
+
+  <div class='row'>
+  <div class='col-6'>Subtotal</div>
+  <input id='cart-total' type='hidden' total='{{ cart.total }}'>
+  <div class='col-6' style='text-align:right'>${{cart.subtotal }}</div>
+  </div>
+
+  <div class='row'>
+  <div class='col-6'>Discount</div>
+  <div class='col-6' style='text-align:right'>$0</div>
+  </div>
+
+  <div class='row'>
+  <div class='col-6'>Total</div>
+  <div class='col-6' style='text-align:right'>${{cart.total }}</div>
+  </div>
+
+  </div>
+
+  <!-- <div class='row' style='height:25%'>
+    <div class='col-6'>
+      <a class='btn btn-lg btn-success' href='{% url "cart:checkout" %}'>Checkout</a>
+      </div>
+
+      <div class='col-6'>
+        <a class='btn btn-lg btn-success' href='#'>PayPal</a>
+        </div> -->
+
+    </div>
