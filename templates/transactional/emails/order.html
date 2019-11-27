@@ -1,0 +1,15 @@
+<p>Hello Bitch,</p>
+
+<p>Thanks for your order.  Your download links for order # are below</p>
+
+{% for product in product_list %}
+{% for download in product.get_downloads %}
+<p><a href='{{ download.generate_download_url }}'>{{ download.name }}</a></p>
+<br>
+
+{% endfor %}
+{% endfor %}
+
+<p>Links will expire when I please.</p>
+<p>Thanks,</p>
+<p>SplitCloud</p>

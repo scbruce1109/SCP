@@ -1,0 +1,15 @@
+Hello Bitch,
+
+Thanks for your order.  Your download links for order # are below
+
+
+{% for product in product_list %}
+{% for download in product.get_downloads %}
+{{ download.name }}
+
+{% endfor %}
+{% endfor %}
+
+Links will expire when I please.
+Thanks,
+SplitCloud

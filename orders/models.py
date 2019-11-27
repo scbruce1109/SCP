@@ -82,6 +82,9 @@ class OrderManagerQuerySet(models.query.QuerySet):
     def not_refunded(self):
         return self.exclude(status='refunded')
 
+    def by_id(self, id):
+        return self.filter(order_id=id)
+
     def by_request(self, request):
         billing_profile, created = BillingProfile.objects.new_or_get(request)
         return self.filter(billing_profile=billing_profile)

@@ -205,6 +205,6 @@ def checkout_done_view(request):
         #     print('email sent beeeeetch')
 
 
-        return render(request, "carts/checkout-done.html", {})
+        return render(request, "carts/checkout-done.html", context)
     else:
         return redirect("cart:checkout")
