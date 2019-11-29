@@ -71,3 +71,8 @@ def pre_save_cart_receiver(sender, instance, *args, **kwargs):
         instance.total = 0
 
 pre_save.connect(pre_save_cart_receiver, sender=Cart)
+
+
+
+class DiscountCode(models.Model):
+    discount = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)

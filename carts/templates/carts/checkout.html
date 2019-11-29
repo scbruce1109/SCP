@@ -15,10 +15,12 @@
 
 
     <div class='col-12 col-md-6'>
-      {{ object.order_id }} -- {{ object.cart }}
+      <!-- {{ object.order_id }} -- {{ object.cart }} -->
 
       <div class='row text-center checkout-info'>
+        <div class='col-12'>
         <p class='lead'>Information</p>
+        </div>
 
         {% if billing_profile %}
         <div class='row' id='info-display'>
@@ -85,7 +87,6 @@
       <div class='row'>
         <div class='col-12'>
       <p class='lead'>Payment Information</p>
-      <hr/>
       </div>
       </div>
 
