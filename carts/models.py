@@ -75,4 +75,20 @@ pre_save.connect(pre_save_cart_receiver, sender=Cart)
 
 
 class DiscountCode(models.Model):
+    code = models.CharField(max_length=120, blank=True)
     discount = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)
+    active = models.BooleanField(default=True)
+    users = models.ManyToManyField(User, blank=True, null=True)
+
+    def __str__(self):
+        return self.code
+
+    def is_active(self):
+        return self.active
+
+    def can_use(self, user):
+        qs = self.users.all()
+        if user not in qs and self.is_active():
+            return True
+        else:
+            return False
