@@ -9,7 +9,7 @@ from django.conf import settings
 SENDINBLUE_API_KEY = getattr(settings, "SENDINBLUE_API_KEY_V3", None)
 
 
-def get_subscriber_hash(member_email):
+def get_email_hash(member_email):
     check_email(member_email)
     member_email = member_email.lower().encode()
     m = hashlib.md5(member_email)
@@ -33,13 +33,20 @@ class SendInBlue(object):
         'content-type': "application/json"
         }
 
-    def add_contact(self, email):
+    def add_contact(self, email, attributes=None):
         contact_endpoint = 'contacts'
         url = self.api_url + contact_endpoint
         data = {
             'email': email,
             'updateEnabled': False
         }
+
+        if attributes:
+            atts = {
+                'FNAME': attributes['FNAME'],
+                'LNAME': attributes['LNAME']
+            }
+            data['attributes'] = atts
 
         response = requests.request("POST", url, data=json.dumps(data), headers=self.headers)
         return response.text
@@ -49,9 +56,29 @@ class SendInBlue(object):
         url = self.api_url + 'contacts/' + email
         data = {
             'attributes': {
-                'FNAME': attributes['FNAME'],
-                'LNAME': attributes['LNAME']
+                'FIRSTNAME': attributes['FNAME'],
+                'LASTNAME': attributes['LNAME']
             }
         }
 
         response = requests.request('PUT', url, data=json.dumps(data), headers=self.headers)
+        return response
+
+
+    def send_transactional_email(self, template, email):
+        url = self.api_url + '/smtp/email'
+        data = {
+            'sender': {
+                'name': 'Steve from SplitCloud',
+                'email': 'bruce.stephenc@gmail.com'
+            },
+            'to': [{
+                'email': email,
+            }],
+            'templateId': template,
+            'params': {
+                'ORDER': '12345'
+            }
+        }
+        response = requests.request('POST', url, data=json.dumps(data), headers=self.headers)
+        return response
