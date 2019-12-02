@@ -43,3 +43,15 @@ class SendInBlue(object):
 
         response = requests.request("POST", url, data=json.dumps(data), headers=self.headers)
         return response.text
+
+
+    def update_contact(self, email, attributes):
+        url = self.api_url + 'contacts/' + email
+        data = {
+            'attributes': {
+                'FNAME': attributes['FNAME'],
+                'LNAME': attributes['LNAME']
+            }
+        }
+
+        response = requests.request('PUT', url, data=json.dumps(data), headers=self.headers)
