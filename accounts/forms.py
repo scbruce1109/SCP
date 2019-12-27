@@ -91,6 +91,14 @@ class GuestForm(forms.ModelForm):
             'email'
         ]
 
+        labels = {
+            'email': ''
+        }
+
+        widgets = {
+            'email': forms.TextInput(attrs={'placeholder': 'Email'})
+        }
+
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super(GuestForm, self).__init__(*args,**kwargs)

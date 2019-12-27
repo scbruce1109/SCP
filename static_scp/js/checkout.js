@@ -25,7 +25,7 @@ function userInfoToggle() {
 
   if (infoEditBtn) {
     infoEditBtn.addEventListener('click', function() {
-      infoForms.style.display='block';
+      infoForms.style.display='table';
       infoDisplay.style.display = 'none';
     })
   }

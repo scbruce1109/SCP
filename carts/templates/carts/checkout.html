@@ -31,7 +31,8 @@
 
 
         {% if billing_profile %}
-        <div class='checkout-row' id='info-display'>
+        <div id='info-display'>
+        <div class='checkout-row'>
           <div class='checkout-item-title'>
             {{ billing_profile.email }}
           </div>
@@ -40,10 +41,11 @@
           <div class='checkout-item-title'>
             {{ billing_profile.email }}
           </div>
+        </div>
         </div>
         {% endif %}
 
-        <div id='info-forms' style='display:{% if billing_profile %}none{% endif %}'>
+        <div id='info-forms' style='width:100%;display:{% if billing_profile %}none{% else %}table{% endif %}'>
 
           <div class='col-12' id='guest-register-form'>
             {% url "guest_register" as guest_register_url %}
@@ -74,7 +76,7 @@
 
 
 {% if shipping_address_required %}
-  <div class='row checkout-info'>
+  <div class='checkout-info'>
     <div class='col-12' id=>
       <p class='lead'>Shipping Information</p>
       <hr/>
@@ -94,10 +96,10 @@
 
 
   <div class='row checkout-info'>
-    <div class='col-12' id='payment-info'>
-      <div class='row'>
-        <div class='col-12'>
-      <p class='lead'>Payment Information</p>
+    <div id='payment-info' style='width:100%;'>
+      <div class='checkout-row'>
+        <div class='checkout-header-title'>
+      <h4>Payment Information</h4>
       </div>
       </div>
 
