@@ -1,0 +1,63 @@
+
+.checkout-row {
+  display: table;
+  width: 100%;
+  padding: 0px;
+}
+
+.checkout-item-title {
+  display: table-cell;
+  width: 50%;
+  text-align: left;
+}
+
+
+.checkout-header-title {
+  display: table-cell;
+  width: 50%;
+  text-align: left;
+  vertical-align: bottom;
+}
+
+
+.checkout-header-edit-btn {
+  display: table-cell;
+  width: 50%;
+  text-align: right;
+  vertical-align: center;
+}
+
+
+.checkout-item-price {
+  display: table-cell;
+  width: 50%;
+  text-align: right;
+}
+
+#discount-form-container {
+  display: table;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#discount-form {
+  width: 100%;
+}
+
+#discount-input {
+  width: 100%;
+}
+
+
+
+.btn-cont {
+  display: table-cell;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.input-span {
+  display: table-cell;
+  width: 100%;
+}

@@ -19,7 +19,7 @@ function paypalOrderHandler(orderID) {
   })
 }
 
-var cart_total = document.getElementById('cart-total')
+var cart_total = document.getElementById('cart-total-hidden')
 var total = cart_total.getAttribute('total')
 
 paypal.Buttons({

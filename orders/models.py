@@ -63,7 +63,6 @@ class OrderManagerQuerySet(models.query.QuerySet):
     def by_date(self):
         now = timezone.now() - datetime.timedelta(days=2)
         ting = self.filter(updated__day__gte=now.day)
-        print(ting)
         return ting
 
     def totals_data(self):

@@ -12,7 +12,8 @@ from billing.utils import get_paypal_token, get_order_details
 from billing.models import BillingProfile
 from orders.models import Order
 from products.models import Product
-from .models import Cart
+from .models import Cart, DiscountCode
+from .forms import DiscountCodeForm
 
 from django.core.mail import send_mail
 from django.template.loader import get_template
@@ -70,12 +71,14 @@ def cart_update(request):
 
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
+    print(cart_obj.total)
     order_obj = None
     if cart_created or cart_obj.products.count() == 0:
         return redirect("cart:home")
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
     address_form = AddressForm()
+    discount_form = DiscountCodeForm()
     billing_address_id = request.session.get("billing_address_id", None)
 
     shipping_address_required = not cart_obj.is_digital
@@ -101,6 +104,11 @@ def checkout_home(request):
             order_obj.save()
         has_card = billing_profile.has_card
 
+    if cart_obj.has_discount():
+        discount_amount = round(cart_obj.subtotal * cart_obj.discount.discount,2)
+    else:
+        discount_amount = 0
+
     if request.method == "POST":
         "Check that order is done"
         is_prepared = order_obj.check_done()
@@ -122,11 +130,15 @@ def checkout_home(request):
 
     context = {
         "object": order_obj,
+        "cart_obj": cart_obj,
+        "cart_discount": cart_obj.has_discount(),
+        "discount_amount": discount_amount,
         "billing_profile": billing_profile,
         "login_form": login_form,
         "guest_form": guest_form,
         "address_form": address_form,
         "address_qs": address_qs,
+        "discount_form": discount_form,
         "has_card": has_card,
         "publish_key": STRIPE_PUB_KEY,
         'shipping_address_required': shipping_address_required,
@@ -177,6 +189,7 @@ def paypal_transaction_complete_view(request):
 
 def checkout_done_view(request):
     if request.session['order_id']:
+        #### check this part, add .get below
         id = request.session['order_id']
         qs = Order.objects.all().by_id(id)
         order_obj = qs.first()
@@ -208,3 +221,21 @@ def checkout_done_view(request):
         return render(request, "carts/checkout-done.html", context)
     else:
         return redirect("cart:checkout")
+
+
+
+def discount_code_apply_view(request):
+    if request.method == "POST" and request.is_ajax():
+        response_data = {}
+        code = request.POST.get('discount_code')
+        cart_obj, created = Cart.objects.new_or_get(request)
+        data = cart_obj.apply_discount(code)
+        if data is not None:
+            response_data['success'] = True
+            response_data['message'] = 'Success! Discount code applied'
+            response_data['new_total'] = round(data['new_total'],2)
+            response_data['discount_amount'] = round(data['discount'],2)
+        else:
+            response_data['message'] = 'Discount code is not valid or has expired'
+        return JsonResponse(response_data)
+    return redirect("cart:checkout")

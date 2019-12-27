@@ -23,10 +23,12 @@ function userInfoToggle() {
   var infoForms = document.getElementById('info-forms');
   var infoDisplay = document.getElementById('info-display');
 
-  infoEditBtn.addEventListener('click', function() {
-    infoForms.style.display='block';
-    infoDisplay.style.display = 'none';
-  })
+  if (infoEditBtn) {
+    infoEditBtn.addEventListener('click', function() {
+      infoForms.style.display='block';
+      infoDisplay.style.display = 'none';
+    })
+  }
 }
 
 
@@ -38,16 +40,20 @@ function billingAddressToggle() {
   var paymentForm = document.getElementById('payment-form');
   var paymentDisplay = document.getElementById('payment-display');
 
-  billingAddressEditBtn.addEventListener('click', function() {
-    billingAddressForm.style.display='block';
-    billingAddressDisplay.style.display = 'none';
-    paymentForm.style.display = 'none';
-  })
+  if (billingAddressEditBtn) {
+    billingAddressEditBtn.addEventListener('click', function() {
+      billingAddressForm.style.display='block';
+      billingAddressDisplay.style.display = 'none';
+      paymentForm.style.display = 'none';
+    })
+}
 
-  paymentEditBtn.addEventListener('click', function() {
-    paymentForm.style.display='block';
-    paymentDisplay.style.display = 'none';
-  })
+  if (paymentEditBtn) {
+    paymentEditBtn.addEventListener('click', function() {
+      paymentForm.style.display='block';
+      paymentDisplay.style.display = 'none';
+    })
+}
 
 }
 
@@ -85,11 +91,57 @@ function paymentMethodSwitch() {
 // }
 
 
+
+function discountCodeApply() {
+  var discountForm = $("#discount-form")
+  console.log(discountForm)
+  $("#discount-form").submit(function(e){
+    e.preventDefault();
+    var thisForm = $(this);
+    // var actionEndpoint = thisForm.attr("action");
+    var actionEndpoint = thisForm.attr("data-endpoint")
+    console.log(actionEndpoint);
+    var discountValue = $('#discount-input').val()
+    console.log(discountValue);
+    $.ajax({
+        url : actionEndpoint, // the endpoint
+        type : "POST", // http method
+        data : { discount_code : $('#discount-input').val() }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            $('#discount-input').val(''); // remove the value from the input
+            if (json['success']) {
+              $('#cart-total').html('<b>$' + json['new_total']+'</b>');
+              $('#cart-total-hidden').attr('total', json['new_total'])
+              $('#discount-form-messages').html(json['message'])
+              $('#discount-amount').html('- $' + json['discount_amount']);
+              $('#discount-form-container').attr('style', 'display:none;')
+            }
+            else {
+              $('#discount-form-messages').html(json['message'])
+            }
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+})
+}
+
+
 window.addEventListener("load", () => {
 
   userFormToggle();
   userInfoToggle();
   billingAddressToggle();
   paymentMethodSwitch();
+  discountCodeApply();
+
+
+
 
 })

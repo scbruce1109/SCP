@@ -6,6 +6,51 @@ from products.models import Product
 
 User = settings.AUTH_USER_MODEL
 
+
+
+
+class DiscountCodeQuerySet(models.query.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+    def by_code(self, code):
+        return self.filter(code__iexact=code)
+
+
+class DiscountCodeManager(models.Manager):
+    def get_queryset(self):
+        return DiscountCodeQuerySet(self.model, using=self._db)
+
+    def all(self):
+        return self.get_queryset().active()
+
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=120, blank=True)
+    discount = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)
+    active = models.BooleanField(default=True)
+    users = models.ManyToManyField(User, blank=True, null=True)
+
+    objects = DiscountCodeManager()
+
+    def __str__(self):
+        return self.code
+
+    def is_active(self):
+        return self.active
+
+    def can_use(self, user):
+        qs = self.users.all()
+        if user not in qs and self.is_active():
+            return True
+        else:
+            return False
+
+
+
+
+
 class CartManager(models.Manager):
     def new_or_get(self, request):
         cart_id = request.session.get("cart_id", None)
@@ -37,6 +82,7 @@ class Cart(models.Model):
     subtotal    = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)
     updated     = models.DateTimeField(auto_now=True)
     timestamp   = models.DateTimeField(auto_now_add=True)
+    discount    = models.ForeignKey(DiscountCode, on_delete=models.PROTECT, null=True, blank=True)
 
     objects = CartManager()
 
@@ -50,6 +96,32 @@ class Cart(models.Model):
         if new_qs.exists():
             return False
         return True
+
+
+    def has_discount(self):
+        if self.discount:
+            return True
+        else:
+            return False
+
+    def apply_discount(self, code):
+        qs = DiscountCode.objects.all().by_code(code)
+        if qs.exists():
+            discount_code = qs.first()
+            discount = self.subtotal * discount_code.discount
+            new_total = self.subtotal - discount
+            self.total = new_total
+            self.discount = discount_code
+            self.save()
+            data = {
+                    'discount': discount,
+                    'new_total': new_total,
+                    }
+            return data
+        else:
+            return None
+
+
 
 
 def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
@@ -66,29 +138,13 @@ m2m_changed.connect(m2m_changed_cart_receiver, sender=Cart.products.through)
 
 def pre_save_cart_receiver(sender, instance, *args, **kwargs):
     if instance.subtotal > 0:
-        instance.total = float(instance.subtotal) * float(1.08)
+        if instance.has_discount():
+            discount = instance.subtotal * instance.discount.discount
+            new_total = instance.subtotal - discount
+            instance.total = new_total
+        else:
+            instance.total = float(instance.subtotal)
     else:
         instance.total = 0
 
 pre_save.connect(pre_save_cart_receiver, sender=Cart)
-
-
-
-class DiscountCode(models.Model):
-    code = models.CharField(max_length=120, blank=True)
-    discount = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)
-    active = models.BooleanField(default=True)
-    users = models.ManyToManyField(User, blank=True, null=True)
-
-    def __str__(self):
-        return self.code
-
-    def is_active(self):
-        return self.active
-
-    def can_use(self, user):
-        qs = self.users.all()
-        if user not in qs and self.is_active():
-            return True
-        else:
-            return False

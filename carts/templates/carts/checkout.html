@@ -15,18 +15,30 @@
 
 
     <div class='col-12 col-md-6'>
-      <!-- {{ object.order_id }} -- {{ object.cart }} -->
 
-      <div class='row text-center checkout-info'>
-        <div class='col-12'>
-        <p class='lead'>Information</p>
+      <div class='checkout-info'>
+
+        <div class='checkout-row'>
+          <div class='checkout-header-title'>
+        <h4>Information</h4>
+        </div>
+        <div class='checkout-header-edit-btn' id='info-edit-btn'>
+          Edit
+          </div>
         </div>
 
+
+
+
         {% if billing_profile %}
-        <div class='row' id='info-display'>
-          <div class='col-12'>
-            <p>Email: {{ billing_profile.email }}</p>
-            <p id='info-edit-btn' style='float:right'>Edit</p>
+        <div class='checkout-row' id='info-display'>
+          <div class='checkout-item-title'>
+            {{ billing_profile.email }}
+          </div>
+        </div>
+        <div class='checkout-row' id='info-display'>
+          <div class='checkout-item-title'>
+            {{ billing_profile.email }}
           </div>
         </div>
         {% endif %}
@@ -57,7 +69,6 @@
           </div>
 
         </div>
-
 
   </div>
 
@@ -214,7 +225,8 @@
 
 <div class='col-12 col-md-6'>
   <div id='checkout-info-cont' class='col-12' style='background-color:lightblue'>
-    {% include 'carts/snippets/cart-display.html' with cart=object.cart %}
+    {% include 'carts/snippets/cart-display.html' with cart=cart_obj %}
+
 
     </div></div>
 </div>
