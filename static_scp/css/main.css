@@ -49,6 +49,31 @@
   width: 100%;
 }
 
+.form-input-container {
+  display: table-cell;
+  padding: 5px;
+  width: 50%;
+
+}
+
+.input-field {
+  margin: 7px;
+  display: table-cell;
+  border-radius: 5px;
+  height: 40px;
+}
+
+.full {
+  width: 100%;
+}
+
+.third {
+  width: 33.33%;
+}
+
+.short {
+  width: 20%;
+}
 
 
 .btn-cont {

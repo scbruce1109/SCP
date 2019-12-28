@@ -26,10 +26,10 @@ class AddressForm(forms.ModelForm):
         }
 
         widgets = {
-            'address_line_1': forms.TextInput(attrs={'placeholder': 'Address Line 1', 'class': 'input-long'}),
-            'address_line_2': forms.TextInput(attrs={'placeholder': 'Address Line 2'}),
-            'city': forms.TextInput(attrs={'placeholder': 'City'}),
-            'country': forms.TextInput(attrs={'placeholder': 'Country'}),
-            'state': forms.TextInput(attrs={'placeholder': 'State'}),
-            'postal_code': forms.TextInput(attrs={'placeholder': 'Postal Code'}),
+            'address_line_1': forms.TextInput(attrs={'placeholder': 'Address 1', 'class': 'input-field full'}),
+            'address_line_2': forms.TextInput(attrs={'placeholder': 'Address 2', 'class': 'input-field full'}),
+            'city': forms.TextInput(attrs={'placeholder': 'City', 'class': 'input-field third'}),
+            'country': forms.TextInput(attrs={'placeholder': 'Country', 'class': 'input-field full'}),
+            'state': forms.TextInput(attrs={'placeholder': 'State', 'class': 'input-field short'}),
+            'postal_code': forms.TextInput(attrs={'placeholder': 'Postal Code', 'class': 'input-field third'}),
         }

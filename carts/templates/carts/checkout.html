@@ -103,51 +103,83 @@
       </div>
       </div>
 
-      <div class='row'>
-      <div class='col-12' id='payment-forms' style='display:{% if billing_profile %}block{% else %}none{% endif %}'>
+      <div id='payment-forms' style='width:100%;display:{% if billing_profile %}block{% else %}none{% endif %}'>
 
-        <div class='row'>
-          <div class='col-12'>
+
         {% if object.billing_address %}
-          <div class='row' id='billing-address-display'>
-            <div class='col-12'>
-            <div class='row'>
-              <div class='col-11'><b>Billing Address</b></div>
-              <div class='col-1' id='billing-address-edit-btn'>Edit</div>
+          <div id='billing-address-display' style='width:100%;'>
+            <div class='checkout-row'>
+              <div class='checkout-header-title'><b>Billing Address</b></div>
+              <div class='checkout-header-edit-btn' id='billing-address-edit-btn'>Edit</div>
             </div>
 
-            <div class='row'>
-              <p>{{ object.billing_address.address_line_1 }}</p>
+            <div class='checkout-row'>
+              <div class='checkout-item-title'>{{ object.billing_address.address_line_1 }}</div>
             </div>
-          </div>
+            {% if object.billing_address.address_line_2 %}
+            <div class='checkout-row'>
+              <div class='checkout-item-title'>{{ object.billing_address.address_line_2 }}</div>
+            </div>
+            {% endif %}
+            <div class='checkout-row'>
+              <div class='checkout-item-title'>{{ object.billing_address.country }}</div>
+            </div>
+            <div class='checkout-row'>
+              <div class='checkout-item-title'>{{ object.billing_address.city }} {{object.billing_address.state }} {{ object.billing_address.postal_code }}</div>
+            </div>
           </div>
           {% endif %}
 
-        <div class='row' id='billing-address-form' style='display:{% if object.billing_address %}none{% endif %}'>
-          <div class='col-12'>
+        <div id='billing-address-form' style='width:100%;display:{% if object.billing_address %}none{% endif %}'>
           {% url "checkout_address_create" as checkout_address_create %}
-          {% include 'addresses/snippets/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}
+          <div class='checkout-row'>
+            <div class='form-input-container full'>
+          <!-- {{ address_form.address_line_1 }} -->
           </div>
-        </div>
+          </div>
+          <!-- {% include 'addresses/snippets/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %} -->
+          <form method='POST' action='{{ checkout_address_create }}'> {% csrf_token %}
+            <input type='hidden' name='next' value='{{ request.build_absolute_uri }}' />
+            <input type='hidden' name='address_type' value='billing'/>
+            <div class='checkout-row'>
+            {{ address_form.address_line_1 }}
+            </div>
+            <div class='checkout-row'>
+            {{ address_form.address_line_2 }}
+            </div>
+            <div class='checkout-row'>
+              {{ address_form.country }}
+            </div>
+            <div class='checkout-row'>
+              {{ address_form.city }}
+              {{ address_form.state }}
+              {{ address_form.postal_code }}
+            </div>
+
+
+            <button type='submit' class='btn btn-default'>Submit</button>
+          </form>
 
         </div>
-        </div>
+
+
 
     <!-- <div class='col-6'>
     {% url 'checkout_address_reuse' as checkout_address_reuse %}
     {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}
     </div> -->
 
-      <div class='row'>
-        <div class='col-12'><b>Payment Method</b></div>
-      </div>
+    <hr>
+      <div class='checkout-row'>
+        <div class='checkout-header-title'><b>Payment Method</b></div>
+        <div class='checkout-item-price' id='payment-edit-btn'>Edit</div>
+        </div>
 
-      <div class='row' id='payment-form'  style='display:{% if not object.billing_address or has_card %}none{% endif %}'>
-        <div class='col-12'>
+      <div id='payment-form'  style='display:{% if not object.billing_address or has_card %}none{% endif %}'>
 
-        <div class='row'>
-          <div class='col-6' id='credit-card-btn'>Credit Card</div>
-          <div class='col-6' id='paypal-btn'>Paypal</div>
+        <div class='checkout-row'>
+          <div class='checkout-item-title' id='credit-card-btn'>Credit Card</div>
+          <div class='checkout-item-price' id='paypal-btn'>Paypal</div>
           </div>
 
 
@@ -165,19 +197,16 @@
         </div>
 
       </div>
-      </div>
 
       {% if has_card %}
-      <div class='row' id='payment-display'>
-        <div class='col-12'>
-          <p>{{ billing_profile.default_card }}</p>
-          <p id='payment-edit-btn'>Edit</p>
+      <div class='checkout-row' id='payment-display'>
+        <div class='checkout-item-title'>
+          {{ billing_profile.default_card }}
           </div>
       </div>
       {% endif %}
 
 
-      </div>
       </div>
 
       </div>
@@ -185,23 +214,21 @@
 
 
       <div class='row checkout-info'>
-        <div class='col-12'>
-          <p class='lead'>Confirmation</p>
+        <div class='checkout-row'>
+          <div class='checkout-header-title'><h4>Confirmation</h4></div>
           </div>
 
-          <div class='col-12' id='confirm-purchase' style='display:{% if has_card %}block{% else %}none{% endif %}'>
-            <div class='row'>
-              <div class='col-12'>
+          <div id='confirm-purchase' style='width:100%;display:{% if has_card %}block{% else %}none{% endif %}'>
+            <div class='checkout-row'>
+              <div class='checkout-item-title'>
                 <p>Review your information and purchase</p>
             </div>
             </div>
 
-            <div class='row'>
-            <div class='col-12'>
+            <div class='checkout-row'>
               <form class='form' method='POST' action="">{% csrf_token %}
                 <button type='submit' class='btn btn-success'>Purchase</button>
               </form>
-              </div>
               </div>
               </div>
 
@@ -226,7 +253,7 @@
 
 
 <div class='col-12 col-md-6'>
-  <div id='checkout-info-cont' class='col-12' style='background-color:lightblue'>
+  <div id='checkout-info-cont' class='checkout-info'>
     {% include 'carts/snippets/cart-display.html' with cart=cart_obj %}
 
 

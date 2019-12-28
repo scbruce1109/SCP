@@ -2,13 +2,15 @@
   /* background-color: pink; */
   opacity: 50%;
   height: 100%;
-  width: 100%;
+  width: 85%;
+  margin: 0 auto;
 }
 
 .checkout-info {
   background-color: lightblue;
   margin: 10px;
   padding: 20px;
+  border-radius: 5px;
 }
 
 #login-form {

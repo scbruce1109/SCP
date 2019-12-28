@@ -182,11 +182,11 @@ function stripeTokenHandler(nextUrl, token) {
       if (nextUrl){
         successMsg = successMsg + "<br/><i class='fa fa-spin fa-spinner'></i> Redirecting...."
       }
-      if ($.alert){
-        $.alert(successMsg)
-      } else{
-        alert(successMsg)
-      }
+      // if ($.alert){
+      //   $.alert(successMsg)
+      // } else{
+      //   alert(successMsg)
+      // }
       btnLoad.html(btnLoadDefaultHtml)
       btnLoad.attr('class', btnLoadDefaultClasses)
       redirectToNext(nextUrl, 1500)
