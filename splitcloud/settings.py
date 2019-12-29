@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'products',
     'search',
     'tags',
+    'transactional',
 
 ]
 
@@ -78,6 +79,8 @@ LOGOUT_REDIRECT_URL = '/login'
 MAILCHIMP_API_KEY = creds.get('MAILCHIMP_API_KEY')
 MAILCHIMP_DATA_CENTER = "us20"
 MAILCHIMP_EMAIL_LIST_ID = creds.get('MAILCHIMP_EMAIL_LIST_ID')
+
+SENDINBLUE_API_KEY_V3 = creds.get('SENDINBLUE_API_KEY_V3')
 
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
