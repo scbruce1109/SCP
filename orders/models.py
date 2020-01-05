@@ -183,11 +183,12 @@ class Order(models.Model):
             )
         return ProductPurchase.objects.filter(order_id=self.order_id).count()
 
-    def mark_paid(self):
+    def mark_paid(self, request):
         if self.status != 'paid':
             if self.check_done():
                 self.status = "paid"
                 self.save()
+                request.session['order_id'] = self.order_id
                 self.update_purchases()
         return self.status
 

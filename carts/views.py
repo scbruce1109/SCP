@@ -163,17 +163,18 @@ def paypal_transaction_complete_view(request):
 
             if billing_profile is not None:
                 order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
-                if id is not None:
-                    order_obj.order_id = id
-                    order_obj.save()
 
                 if status == 'COMPLETED':
-                    order_obj.status = 'paid'
-                    order_obj.save()
+                    order_obj.mark_paid(request)
                     request.session['cart_items'] = 0
-                    request.session['order_id'] = id
                     del request.session['cart_id']
                     return JsonResponse({"message": "Success!"})
+
+                elif id is not None:
+                    order_obj.order_id = id
+                    order_obj.save()
+                    return JsonResponse({"message": "Error"})
+
                 else:
                     print('something happend')
 

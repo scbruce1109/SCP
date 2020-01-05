@@ -2,11 +2,16 @@ import requests
 import base64
 import json
 
+from django.conf import settings
+
+PAYPAL_CLIENT_ID = getattr(settings, "PAYPAL_CLIENT_ID")
+PAYPAL_CLIENT_SECRET = getattr(settings, "PAYPAL_CLIENT_SECRET")
+
 
 
 def get_paypal_token():
-    client_id = "AUVtF6GSgMI3alWzJ8c96dTtzRijI4739uFTmTkA7faeOAcF039Vn4TMHTmHyO7v5tg7LUosCNBsm2kl"
-    client_secret = "EJmZlvofhI-92L_RLb7Iwhp78aJtraSMWTSETu_dLEVaLm35OW6bMyGXyQ8D2hV_eEJ_uXvqbNoz5bNK"
+    client_id = PAYPAL_CLIENT_ID
+    client_secret = PAYPAL_CLIENT_SECRET
 
     credentials = "%s:%s" % (client_id, client_secret)
     encode_credential = base64.b64encode(credentials.encode('utf-8')).decode('utf-8').replace("\n", "")

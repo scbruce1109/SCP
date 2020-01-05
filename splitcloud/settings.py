@@ -88,6 +88,9 @@ FORCE_INACTIVE_USER_ENDSESSION = False
 STRIPE_PUB_KEY = creds.get('STRIPE_PUB_KEY', 'pk_test_NDDVONYz0ZEtqGhrmOtnDKxw')
 STRIPE_SECRET_KEY = creds.get('STRIPE_SECRET_KEY', 'sk_test_HAJZxFu1o25Igf8UvjOyI2ZK')
 
+PAYPAL_CLIENT_ID = creds.get('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = creds.get('PAYPAL_CLIENT_SECRET')
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
