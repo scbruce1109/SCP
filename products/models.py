@@ -132,7 +132,7 @@ class ProductFile(models.Model):
     name            = models.CharField(max_length=120, null=True, blank=True)
     file            = models.FileField(
                         upload_to=upload_product_file_loc,
-                        storage=FileSystemStorage(location=settings.PROTECTED_ROOT),  ### use location=settings.PROTECTED_ROOT for local
+                        storage=ProtectedS3Storage(),  ### use location=settings.PROTECTED_ROOT for local
                         )
     free            = models.BooleanField(default=False) # purchase required
     user_required   = models.BooleanField(default=False) # user doesn't matter

@@ -184,6 +184,6 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
 
 PROTECTED_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "protected_media")
 
-# from splitcloud.AWS.conf import *
-# AWS_ACCESS_KEY_ID = creds.get('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = creds.get('AWS_SECRET_ACCESS_KEY')
+from splitcloud.AWS.conf import *
+AWS_ACCESS_KEY_ID = creds.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = creds.get('AWS_SECRET_ACCESS_KEY')
