@@ -65,7 +65,7 @@ class SendInBlue(object):
         return response
 
 
-    def send_transactional_email(self, template, email):
+    def send_transactional_email(self, email, html, text, subject):
         url = self.api_url + '/smtp/email'
         data = {
             'sender': {
@@ -75,10 +75,12 @@ class SendInBlue(object):
             'to': [{
                 'email': email,
             }],
-            'templateId': template,
-            'params': {
-                'ORDER': '12345'
-            }
+            'htmlContent': html,
+            'textContent': text,
+            'subject': subject,
+            'replyTo': {
+                'email': 'bruce.stephenc@gmail.com'
+            },
         }
         response = requests.request('POST', url, data=json.dumps(data), headers=self.headers)
         return response

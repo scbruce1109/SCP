@@ -10,10 +10,12 @@ from addresses.models import Address
 
 from billing.utils import get_paypal_token, get_order_details
 from billing.models import BillingProfile
-from orders.models import Order
+from orders.models import Order, ProductPurchase
 from products.models import Product
 from .models import Cart, DiscountCode
 from .forms import DiscountCodeForm
+
+from transactional.utils import SendInBlue
 
 from django.core.mail import send_mail
 from django.template.loader import get_template
@@ -115,7 +117,7 @@ def checkout_home(request):
         if is_prepared:
             did_charge, crg_msg = billing_profile.charge(order_obj)
             if did_charge:
-                order_obj.mark_paid()
+                order_obj.mark_paid(request)
                 request.session['cart_items'] = 0
                 del request.session['cart_id']
                 if not billing_profile.user:
@@ -202,11 +204,13 @@ def checkout_done_view(request):
         }
         print('order successful')
 
-        # txt_ = get_template("transactional/emails/order.txt").render(context)
-        # html_ = get_template("transactional/emails/order.html").render(context)
-        # subject = 'Your order'
+        txt_ = get_template("transactional/emails/order.txt").render(context)
+        html_ = get_template("transactional/emails/order.html").render(context)
+        subject = 'Your order'
         # from_email = settings.DEFAULT_FROM_EMAIL
-        # recipient_list = [email]
+        recipient = email
+        sendinblue = SendInBlue()
+        sent_email = sendinblue.send_transactional_email(email, html_, txt_, subject)
         # sent_mail = send_mail(
         #             subject,
         #             txt_,
@@ -217,7 +221,7 @@ def checkout_done_view(request):
         #             )
         # if sent_mail:
         #     print('email sent beeeeetch')
-
+        print(sent_email)
 
         return render(request, "carts/checkout-done.html", context)
     else:

@@ -6,6 +6,9 @@
   <h1 class='display-1'>Thank you for your order</h1>
   {% for product in product_list %}
     <p>{{ product.name }}</p>
+    {% for file in product.productfile_set.all %}
+    <a href='{{ file.generate_download_url  }}'>Download Here</a>
+      {% endfor %}
       {% endfor %}
   </div>
 

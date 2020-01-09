@@ -234,6 +234,9 @@ class ProductPurchaseQuerySet(models.query.QuerySet):
         billing_profile, created = BillingProfile.objects.new_or_get(request)
         return self.filter(billing_profile=billing_profile)
 
+    def by_order_id(self, order_id):
+        return self.filter(order_id=order_id)
+
 
 class ProductPurchaseManager(models.Manager):
     def get_queryset(self):
