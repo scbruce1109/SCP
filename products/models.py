@@ -206,6 +206,12 @@ class Beat(models.Model):
     def get_mp3_url(self):
         return 'media/' + self.filename
 
+    def get_aws_url(self):
+        url = self.audio_file.url
+        split = url.split('?')
+        print(split[0])
+        return split[0]
+
     def has_audio(self):
         if self.audio_file:
             return True

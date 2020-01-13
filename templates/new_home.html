@@ -83,7 +83,7 @@
               {% endif %}
               </span>
 
-          </form> 
+          </form>
         </div>
       </div>
     </div>
@@ -116,9 +116,9 @@
     </div>
     <div id='beat-content'>
       {% for obj in object_list %}
-      <div class='beat-item' beat='{{ obj.audio_file.url }}' title='{{ obj.title }}'>
+      <div class='beat-item' beat='{{ obj.get_aws_url }}' title='{{ obj.title }}'>
         <div class='row'>
-          <div class='col-1'><a class='play-track-btn' beat='{{ obj.audio_file.url }}'>PP</a></div>
+          <div class='col-1'><a class='play-track-btn' beat='{{ obj.get_aws_url }}'>PP</a></div>
           <div class='col-5'>
             {{ obj.title }}
           </div>

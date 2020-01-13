@@ -46,6 +46,7 @@ function hey(){
 
     //////////////////// Audio object
     audio = new Audio();
+    audio.crossOrigin = 'anonymous';
     audio.src = playlist[playlist_index];
     audio.loop = false;
     audio.play();
