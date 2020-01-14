@@ -92,18 +92,21 @@
 </div>
 
 <div id='controls-wrapper'>
+
+<div id='seekbar-container'>
+  <div id='slide-container'>
+    <div id='slider'>
+      </div>
+      </div>
+      </div>
+
 <div id='controls' class='mx-auto'>
   <div id='back-btn'></div>
   <div id='play-pause-btn'></div>
   <div id='fwd-btn'></div>
   </div>
 
-  <div id='seekbar-container'>
-    <div id='slide-container'>
-      <div id='slider'>
-        </div>
-        </div>
-        </div>
+
 
         </div>
 
@@ -117,17 +120,19 @@
     <div id='beat-content'>
       {% for obj in object_list %}
       <div class='beat-item' beat='{{ obj.get_aws_url }}' title='{{ obj.title }}'>
-        <div class='row'>
-          <div class='col-1'><a class='play-track-btn' beat='{{ obj.get_aws_url }}'>PP</a></div>
-          <div class='col-5'>
+        <div class='beat-row'>
+          <div class='beat-pic'><a class='play-track-btn' beat='{{ obj.get_aws_url }}' style='margin-right: 7px;'><img src='{{ obj.thumbnail.url }}'></a>
             {{ obj.title }}
           </div>
 
-          <div class='col-5'>
-            {{ obj.standard.id }}
-            </div>
 
-          <div class='col-1'>
+
+
+          <!-- <div class='beat-type'>
+            {{ obj.standard.id }}
+            </div> -->
+
+          <div class='beat-cart'>
             <div class="beat-modal-btn" standard='{{ obj.standard.id }}' trackout='{{ obj.trackout.id }}' unlimited='{{ obj.unlimited.id }}'><p>O</p>
 
             </div>
@@ -135,6 +140,8 @@
             </div>
 
           </div>
+          <hr>
+
           {% endfor %}
       </div>
     </div>

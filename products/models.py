@@ -192,6 +192,7 @@ class Beat(models.Model):
     bpm = models.CharField(max_length=5, null=True, blank=True)
     active = models.BooleanField(default=True)
     cover_art = models.ImageField(upload_to=upload_media_path, null=True, blank=True)
+    thumbnail = models.ImageField(upload_to=upload_media_path, null=True, blank=True)
     audio_file = models.FileField(upload_to=upload_media_path, null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True)
     standard = models.ForeignKey(Product, blank=True, null=True, related_name='standard_lease', on_delete=models.PROTECT)
