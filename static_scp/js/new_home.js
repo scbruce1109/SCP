@@ -11,10 +11,13 @@ function hey(){
     var audio, playbtn, mutebtn, volumeslider, currentTimeText, durationTimeText, playlist_status, beats;
     var playlist = [];
     var titles = [];
+    var images = [];
     var playlist_index = 0;
 
     // slider variables
 
+    ////cover art stuff
+    var backdrop = document.getElementById('second');
 
     // Set object references
     playbtn = document.getElementById("play-pause-btn");
@@ -23,8 +26,8 @@ function hey(){
     // mutebtn = document.getElementById('mutebtn');
 
     // volumeslider = document.getElementById('volumeslider');
-    // currentTimeText = document.getElementById('currentTimeText');
-    // durationTimeText = document.getElementById('durationTimeText');
+    currentTimeText = document.getElementById('currentTimeText');
+    durationTimeText = document.getElementById('durationTimeText');
     playlist_status = document.getElementById("playlist-status");
     beats = document.getElementsByClassName("beat-item")
 
@@ -36,10 +39,22 @@ function hey(){
     contLength = rect.right - rect.left
 
 
+    //// Volume slider stuff
+    var volSlider, slot, volrect, bing, volSeeking, volBar, volBtn;
+    volBar = document.getElementById('volume-bar')
+    volBtn = document.getElementById('volume-btn')
+    volLevel = document.getElementById("volume-level");
+    slot = document.getElementById('volume-slot')
+    volrect = slot.getBoundingClientRect()
+    slotLength = volrect.bottom - volrect.top
+    console.log(slotLength)
+
+
     ///// Build playlist array
     Array.prototype.forEach.call(beats, function(beat){
       playlist.push(beat.getAttribute('beat'));
       titles.push(beat.getAttribute('title'));
+      images.push(beat.getAttribute('backdrop'))
     })
 
 
@@ -56,15 +71,27 @@ function hey(){
     playbtn.addEventListener("click", playPause);
     nextbtn.addEventListener("click", nextTrack);
     prevbtn.addEventListener("click", previousTrack);
+    volBtn.addEventListener("click", toggleVolumeDisplay);
   //  mutebtn.addEventListener("click", mute);
    cont.addEventListener("mousedown", function(event){ seeking=true; seek(event); });
    cont.addEventListener("mousemove", function(event){ seek(event); });
    cont.addEventListener("mouseup", function() {seeking=false});
-  //  volumeslider.addEventListener("mousemove", setVolume);
+   cont.addEventListener("mouseleave", function() {seeking=false});
+   slot.addEventListener("mousedown", function(event){ volSeeking=true; setVolume(event); });
+   slot.addEventListener("mousemove", function(event){ setVolume(event); });
+   slot.addEventListener("mouseup", function(event){ volSeeking=false});
+   slot.addEventListener("mouseleave", function(event){ volSeeking=false});
    audio.addEventListener("timeupdate", function(){ seekTimeUpdate(); });
    audio.addEventListener("ended", function() { nextTrack(); });
     // Functions
     //
+    function setBackdrop(index){
+      if (images[index] != 'none'){
+      backdrop.style.backgroundImage = "url('" + images[index] + "')";
+    } else {
+      backdrop.style.removeProperty('background-image')
+    }
+    }
     ///////////////////////////// Switch Track function
     function nextTrack(){
       if (playlist_index == (playlist.length -1)){
@@ -74,6 +101,7 @@ function hey(){
       }
       playlist_status.innerHTML = titles[playlist_index];
       audio.src = playlist[playlist_index];
+      setBackdrop(playlist_index);
       audio.play();
     }
 
@@ -85,6 +113,7 @@ function hey(){
       }
       playlist_status.innerHTML = titles[playlist_index];
       audio.src = playlist[playlist_index];
+      setBackdrop(playlist_index);
       audio.play();
     }
 
@@ -105,7 +134,11 @@ function hey(){
 
     Array.prototype.forEach.call(trackBtnArray, function(btn) {
     btn.addEventListener("click", function() {
-        audio.src = btn.getAttribute('beat');
+        var beat = btn.getAttribute('beat');
+        audio.src = beat;
+        var beatIndex = playlist.indexOf(beat);
+        setBackdrop(beatIndex);
+        playlist_status.innerHTML = titles[beatIndex];
         audio.play();
     });
 });
@@ -133,23 +166,45 @@ function hey(){
     }
     // //////////////////////////////////////////// Volume adjust function
     //
-    // function setVolume() {
-    //   audio.volume = volumeslider.value / 100;
-    // }
+    function setVolume(event) {
+      if (volSeeking){
+        volrect = slot.getBoundingClientRect()
+        slotLength = volrect.bottom - volrect.top
+        console.log(slotLength)
+        console.log('volume time')
+        ting = event.clientY;
+        yLength = volrect.bottom - ting
+        yPercent = yLength / slotLength * 100
+        console.log(ting);
+        audio.volume = yPercent / 100;
+        volLevel.style.height = (100 - yPercent).toString() + '%';
+    }
+    }
+
+    function toggleVolumeDisplay(){
+      if (volBar.style.display != 'block'){
+        volBar.style.display = 'block';
+        volBtn.style.color = 'orange';
+      }
+      else {
+        volBar.style.display = 'none';
+        volBtn.style.color = 'white';
+      }
+    }
     // //////////////////////////////////////////////////// Seek time update function
     function seekTimeUpdate(){
       var nt = audio.currentTime * (100 / audio.duration);
       seekslider.style.width = nt.toString() + '%';
-    //   var curmins = Math.floor(audio.currentTime / 60);
-    //   var cursecs = Math.floor(audio.currentTime - curmins * 60);
-    //   var durmins = Math.floor(audio.duration / 60);
-  	//   var dursecs = Math.floor(audio.duration - durmins * 60);
-  	// 	if(cursecs < 10){ cursecs = "0"+cursecs; }
-  	//   if(dursecs < 10){ dursecs = "0"+dursecs; }
-  	//   if(curmins < 10){ curmins = "0"+curmins; }
-  	//   if(durmins < 10){ durmins = "0"+durmins; }
-  	// 	currentTimeText.innerHTML = curmins+":"+cursecs;
-  	//   durationTimeText.innerHTML = durmins+":"+dursecs;
+      var curmins = Math.floor(audio.currentTime / 60);
+      var cursecs = Math.floor(audio.currentTime - curmins * 60);
+      var durmins = Math.floor(audio.duration / 60);
+  	  var dursecs = Math.floor(audio.duration - durmins * 60);
+  		if(cursecs < 10){ cursecs = "0"+cursecs; }
+  	  if(dursecs < 10){ dursecs = "0"+dursecs; }
+  	  if(curmins < 10){ curmins = "0"+curmins; }
+  	  if(durmins < 10){ durmins = "0"+durmins; }
+  		currentTimeText.innerHTML = curmins+":"+cursecs;
+  	  durationTimeText.innerHTML = durmins+":"+dursecs;
     }
 
     function initMp3Player(){

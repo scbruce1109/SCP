@@ -76,7 +76,7 @@ body, html {
 
 }
 
-.second {
+#second {
   background: white url('/static/img/cloud_logo.png') no-repeat center center;
   background-size: 100% auto;
 }
@@ -100,7 +100,7 @@ body, html {
     background-color: yellow;
   }
 
-  .second {
+  #second {
     height: 50%;
     width: 100%;
     background-color: pink;
@@ -137,7 +137,7 @@ body, html {
   width: 25%;
 }
 
-.second {
+#second {
   height: 100%;
   width: 50%;
 }
@@ -174,22 +174,40 @@ body, html {
 }
 
 #controls {
-  width: 15%;
+  width: 100%;
   height: 20px;
-  display: flex;
+  display: table;
   opacity: 25%;
+}
+
+#controls-left {
+  display: table-cell;
+  width: 33.3%;
+  text-align: left;
+}
+
+#controls-center {
+  display: table-cell;
+  width: 33.3%;
+  text-align: center;
+}
+
+#controls-right {
+  display: table-cell;
+  width: 33.3%;
+  text-align: right;
 }
 
 #back-btn {
   background-color: blue;
   height: 100%;
-  width: 33.3%;
+  width: 30px;
   cursor: pointer;
 }
 
 #play-pause-btn {
   height: 100%;
-  width: 33.3%;
+  width: 30px;
   background-color: pink;
   cursor: pointer;
 }
@@ -197,9 +215,42 @@ body, html {
 #fwd-btn {
   background-color: blue;
   height: 100%;
-  width: 33.3%;
+  width: 30px;
   cursor: pointer;
 }
+
+
+#volume-bar {
+  height: 90px;
+  width: 30px;
+  position: absolute;
+  display: none;
+  bottom: 10px;
+  right: 10px;
+  padding: 6px;
+}
+
+#volume-slot {
+  height: 100%;
+  width: 4px;
+  margin: 0 auto;
+  background-color: blue;
+  padding: 0px;
+  cursor: pointer;
+}
+
+#volume-level {
+  height: 50%;
+  width: 100%;
+  background-color: white;
+}
+
+#volume-btn {
+  color: white;
+  cursor: pointer;
+}
+
+
 
 /* Seek bar slider styling */
 
@@ -275,7 +326,6 @@ body, html {
   display: table;
   width: 100%;
   margin-bottom: 10px;
-  padding: 0px;
 }
 
 /* .beat-text-row {
@@ -286,7 +336,7 @@ body, html {
 .beat-pic {
   display: table-cell;
   text-align: left;
-  width: 50%;
+  width: 20%;
 }
 
 /* .beat-title-cont {
@@ -295,18 +345,22 @@ body, html {
   width: 50%;
 } */
 
-/* .beat-title {
-  height:505;
+.beat-title {
+  display: table-cell;
+  text-align: left;
+  width: 60%;
+  vertical-align: middle;
 }
 
-.beat-type {
-  height: 50%;
-} */
+.beat-subtitle {
+  font-size: 10px;
+}
 
 .beat-cart {
   display: table-cell;
   text-align: right;
-  width: 50%;
+  width: 20%;
+  vertical-align: middle;
 }
 
 #beat-content {
