@@ -7,12 +7,11 @@
 {% url 'cart:home' as cart_url %}
 
 <div class="topnav" id="myTopnav">
-  <a href="{{ home_url }}" class="active">Home</a>
-  <a href="{{ beatstore_url }}">Beat Store</a>
-  <a href="{{ products_url }}">Products</a>
-  <a href="{{ login_url }}">Login</a>
-  <a href="{{ logout_url }}">Logout</a>
-  <a href="{{ register_url }}">Register</a>
+  <a href="{{ home_url }}" class="active">Beats</a>
+  <a href="{{ beatstore_url }}">Tools</a>
+  <a href="{{ products_url }}">Services</a>
+  <a href="{{ login_url }}">About</a>
+  <a href="{{ logout_url }}">Contact</a>
   <a class="nav-link" href="{{ cart_url }}"><span class='navbar-cart-count'>Cart {{ request.session.cart_items }}</span> </a>
   <a href="javascript:void(0);" class="icon" onclick="myFunction()">
     <i class="fa fa-bars"></i>

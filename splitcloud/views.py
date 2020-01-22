@@ -17,6 +17,30 @@ def home_page(request):
     return render(request, "home-page.html", context)
 
 
+def about_page(request):
+    context = {
+        "title":"Split Cloud Productions",
+        "content":"About",
+    }
+    return render(request, "home-page.html", context)
+
+
+def services_page(request):
+    context = {
+        "title":"Split Cloud Productions",
+        "content":"Services",
+    }
+    return render(request, "home-page.html", context)
+
+
+def contact_page(request):
+    context = {
+        "title":"Split Cloud Productions",
+        "content":"Contact",
+    }
+    return render(request, "home-page.html", context)
+
+
 def new_home(request):
     context = {
         "title":"Split Cloud Productions",

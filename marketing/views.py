@@ -2,11 +2,11 @@ from django.conf import settings
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import UpdateView, View
+from django.views.generic import UpdateView, View, CreateView
 
-from .forms import MarketingPreferenceForm
+from .forms import MarketingPreferenceForm, SubscribeForm
 from .mixins import CsrfExemptMixin
-from .models import MarketingPreference
+from .models import MarketingPreference, CampaignChoices, Subscriber
 from .utils import Mailchimp
 
 MAILCHIMP_EMAIL_LIST_ID = getattr(settings, "MAILCHIMP_EMAIL_LIST_ID", None)
@@ -82,3 +82,49 @@ class MailchimpWebhookView(View):
                             mailchimp_msg=str(data)
                             )
         return HttpResponse("Thank you", status=200)
+
+
+
+class SubscribeArtistView(View):
+
+    def get(self, request, *args, **kwargs):
+        context = {'form': SubscribeForm()}
+        template = 'marketing/beat_landing_page.html'
+        source = request.GET.get('source')
+        request.session['referring_link'] = source
+        print(source)
+        return render(request, template, context)
+
+    def post(self, request, *args, **kwargs):
+        form = SubscribeForm(request.POST)
+        source = request.session.get('referring_link', None)
+        if form.is_valid():
+            email = form.cleaned_data.get('email','')
+            name = form.cleaned_data.get('name','')
+
+            obj, created = Subscriber.objects.get_or_create(email=email, name=name, referring_link=source)
+            qs = CampaignChoices.objects.all().filter(campaign_type='artist')
+            obj.campaign.set(qs)
+            obj.save()
+            return redirect('/beatstore/')
+        return render(request, 'marketing/beat_landing_page.html', {'form': form})
+
+    # form_class = SubscribeForm
+    # template_name = 'marketing/beat_landing_page.html'
+    # success_url = '/beatstore/'
+    #
+    # def form_valid(self, form):
+    #     email = form.cleaned_data.get('email','')
+    #     name = form.cleaned_data.get('name','')
+    #
+    #     obj, created = Subscriber.objects.get_or_create(email=email)
+    #     # obj.name = name
+    #     #
+    #     #
+    #     #
+    #     # # obj = form.save(commit=False)
+    #     # # obj.save()
+    #     # qs = CampaignChoices.objects.all().filter(campaign_type='artist')
+    #     # obj.campaign.set(qs)
+    #     # obj.save()
+    #     return redirect('/beatstore/')

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import MarketingPreference
+from .models import MarketingPreference, Subscriber, CampaignChoices
 
 class MarketingPreferenceAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'subscribed', 'updated']
@@ -18,3 +18,7 @@ class MarketingPreferenceAdmin(admin.ModelAdmin):
                 ]
 
 admin.site.register(MarketingPreference, MarketingPreferenceAdmin)
+
+admin.site.register(Subscriber)
+
+admin.site.register(CampaignChoices)
