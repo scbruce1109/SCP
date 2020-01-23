@@ -22,7 +22,7 @@ def about_page(request):
         "title":"Split Cloud Productions",
         "content":"About",
     }
-    return render(request, "home-page.html", context)
+    return render(request, "about-page.html", context)
 
 
 def services_page(request):
@@ -30,7 +30,7 @@ def services_page(request):
         "title":"Split Cloud Productions",
         "content":"Services",
     }
-    return render(request, "home-page.html", context)
+    return render(request, "services-page.html", context)
 
 
 def contact_page(request):
@@ -38,7 +38,7 @@ def contact_page(request):
         "title":"Split Cloud Productions",
         "content":"Contact",
     }
-    return render(request, "home-page.html", context)
+    return render(request, "contact-page.html", context)
 
 
 def new_home(request):

@@ -106,7 +106,7 @@
       <div id='payment-forms' style='width:100%;display:{% if billing_profile %}block{% else %}none{% endif %}'>
 
 
-        {% if object.billing_address %}
+        {% if object.billing_address and address_active %}
           <div id='billing-address-display' style='width:100%;'>
             <div class='checkout-row'>
               <div class='checkout-header-title'><b>Billing Address</b></div>
@@ -175,7 +175,7 @@
         <div class='checkout-item-price' id='payment-edit-btn'>Edit</div>
         </div>
 
-      <div id='payment-form'  style='display:{% if not object.billing_address or has_card %}none{% endif %}'>
+      <div id='payment-form'  style='display:{% if not object.billing_address or has_card and card_active %}none{% endif %}'>
 
         <div class='checkout-row'>
           <div class='checkout-item-title' id='credit-card-btn'>Credit Card</div>
@@ -198,7 +198,7 @@
 
       </div>
 
-      {% if has_card %}
+      {% if has_card and card_active %}
       <div class='checkout-row' id='payment-display'>
         <div class='checkout-item-title'>
           {{ billing_profile.default_card }}
@@ -218,7 +218,7 @@
           <div class='checkout-header-title'><h4>Confirmation</h4></div>
           </div>
 
-          <div id='confirm-purchase' style='width:100%;display:{% if has_card %}block{% else %}none{% endif %}'>
+          <div id='confirm-purchase' style='width:100%;display:{% if has_card and card_active %}block{% else %}none{% endif %}'>
             <div class='checkout-row'>
               <div class='checkout-item-title'>
                 <p>Review your information and purchase</p>

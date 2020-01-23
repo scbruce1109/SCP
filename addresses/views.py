@@ -26,6 +26,7 @@ def checkout_address_create_view(request):
             instance.save()
 
             request.session[address_type + "_address_id"] = instance.id
+            request.session['address_active'] = True
             print(address_type +"_address_id")
 
         else:

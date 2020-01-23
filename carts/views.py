@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -111,6 +112,9 @@ def checkout_home(request):
     else:
         discount_amount = 0
 
+    address_active = request.session.get('address_active', False)
+    card_active = request.session.get('card_active', False)
+
     if request.method == "POST":
         "Check that order is done"
         is_prepared = order_obj.check_done()
@@ -134,6 +138,8 @@ def checkout_home(request):
         "object": order_obj,
         "cart_obj": cart_obj,
         "cart_discount": cart_obj.has_discount(),
+        "address_active": address_active,
+        "card_active": card_active,
         "discount_amount": discount_amount,
         "billing_profile": billing_profile,
         "login_form": login_form,
@@ -222,6 +228,7 @@ def checkout_done_view(request):
         # if sent_mail:
         #     print('email sent beeeeetch')
         print(sent_email)
+        logout(request)
 
         return render(request, "carts/checkout-done.html", context)
     else:

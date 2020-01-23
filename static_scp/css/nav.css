@@ -1,14 +1,25 @@
 /* Add background color to top nav */
 .topnav {
-  background-color: #333;
+  background-color: white;
   overflow: hidden;
+}
+
+#nav-logo-container {
+  width: 100%;
+  text-align: center;
+}
+
+#nav-item-container {
+  width: auto;
+}
+
+#nav-items {
+  margin: 0 auto;
 }
 
 /* style the links inside the nav bar */
 .topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
+  color: red;
   text-align: center;
   padding: 13px 16px;
   text-decoration: none;
@@ -17,15 +28,13 @@
 
 /* Change the color of links on hover */
 .topnav a:hover {
-  background-color: #ddd;
-  color: black;
+  color: blue;
   transition: color 500ms, background-color 500ms
 }
 
 /* add an active class to highlight the current page */
 .active {
-  background-color: #4CAF50;
-  color: white;
+
 }
 
 /* hide the link that should open and close the topnav on small screens */
@@ -39,8 +48,8 @@ except the first one (Home). Show icon link */
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon{
-    float: right;
-    display: block;
+    margin:0 auto;
+    display: inline-block;
   }
 }
 

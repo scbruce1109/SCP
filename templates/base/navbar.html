@@ -7,13 +7,18 @@
 {% url 'cart:home' as cart_url %}
 
 <div class="topnav" id="myTopnav">
+  <div id='nav-logo-container'>
+    <h1>Split Cloud Productions</h1>
+    </div>
+  <div id='nav-item-container' style='width:90%;text-align:center;margin:0 auto'>
   <a href="{{ home_url }}" class="active">Beats</a>
   <a href="{{ beatstore_url }}">Tools</a>
   <a href="{{ products_url }}">Services</a>
   <a href="{{ login_url }}">About</a>
   <a href="{{ logout_url }}">Contact</a>
-  <a class="nav-link" href="{{ cart_url }}"><span class='navbar-cart-count'>Cart {{ request.session.cart_items }}</span> </a>
+  <a href="{{ cart_url }}"><span class='navbar-cart-count'>Cart {{ request.session.cart_items }}</span> </a>
   <a href="javascript:void(0);" class="icon" onclick="myFunction()">
     <i class="fa fa-bars"></i>
   </a>
+  </div>
 </div>
