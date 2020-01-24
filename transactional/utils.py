@@ -84,3 +84,25 @@ class SendInBlue(object):
         }
         response = requests.request('POST', url, data=json.dumps(data), headers=self.headers)
         return response
+
+
+
+    def send_contact_email(self, name, email, html, text, subject):
+        url = self.api_url + '/smtp/email'
+        data = {
+            'sender': {
+                'name': name,
+                'email': email
+            },
+            'to': [{
+                'email': 'bruce.stephenc@gmail.com',
+            }],
+            'htmlContent': html,
+            'textContent': text,
+            'subject': subject,
+            'replyTo': {
+                'email': email
+            },
+        }
+        response = requests.request('POST', url, data=json.dumps(data), headers=self.headers)
+        return response

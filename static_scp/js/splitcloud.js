@@ -1,5 +1,67 @@
 $(document).ready(function(){
+  // Contact form handler
+    var contactForm = $(".contact-form")
+    var contactFormMethod = contactForm.attr("method")
+    var contactFormEndpoint = contactForm.attr("action")
 
+
+    function displaySubmitting(submitBtn, defaultText, doSubmit){
+      if (doSubmit){
+      submitBtn.addClass('disabled')
+      submitBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
+    } else {
+      submitBtn.removeClass("disabled")
+      submitBtn.html(defaultText)
+    }
+    }
+
+    contactForm.submit(function(event){
+      event.preventDefault()
+
+      var contactFormSubmitBtn = contactForm.find("[type='submit']")
+      var contactFormSubmitBtnTxt = contactFormSubmitBtn.text()
+
+      var contactFormData = contactForm.serialize()
+      var thisForm = $(this)
+      displaySubmitting(contactFormSubmitBtn, "", true)
+      $.ajax({
+        method: contactFormMethod,
+        url: contactFormEndpoint,
+        data: contactFormData,
+        success: function(data){
+          thisForm[0].reset()
+          // $.alert({
+          //   title: "Success",
+          //   content: data.message,
+          //   theme: "modern"
+          // })
+          console.log(data.message)
+          console.log('uupppp')
+          setTimeout(function(){
+            displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false)
+          }, 2000)
+        },
+        error: function(error){
+          console.log(error.responseJSON)
+          var jsonData = error.responseJSON
+          var msg = ""
+
+          $.each(jsonData, function(key, value){
+            msg += key + ": " + value[0].message + "<br>"
+          })
+
+          $.alert({
+            title: "Oh Heyyy",
+            content: msg
+          })
+
+          setTimeout(function(){
+            displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false)
+          }, 2000)
+
+        }
+      })
+    })
 
 /////////Auto Search Function
 // Auto Search
