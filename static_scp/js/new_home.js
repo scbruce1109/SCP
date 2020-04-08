@@ -2,13 +2,14 @@ function hey(){
   console.log('hey')
 }
 
+var current_track
 
 
 
 
 
   function initAudioPlayer() {
-    var audio, playbtn, mutebtn, volumeslider, currentTimeText, durationTimeText, playlist_status, beats;
+    var audio, playbtn, mutebtn, volumeslider, currentTimeText, durationTimeText, playlist_status, beats, current_track;
     var playlist = [];
     var titles = [];
     var images = [];
@@ -65,6 +66,7 @@ function hey(){
     audio.src = playlist[playlist_index];
     audio.loop = false;
     audio.play();
+    current_track = titles[playlist_index];
     playlist_status.innerHTML = titles[playlist_index];
 
     // Add Event Handling
@@ -99,6 +101,7 @@ function hey(){
       } else {
         playlist_index++;
       }
+      current_track = titles[playlist_index];
       playlist_status.innerHTML = titles[playlist_index];
       audio.src = playlist[playlist_index];
       setBackdrop(playlist_index);
@@ -111,6 +114,7 @@ function hey(){
       } else {
         playlist_index--;
       }
+      current_track = titles[playlist_index];
       playlist_status.innerHTML = titles[playlist_index];
       audio.src = playlist[playlist_index];
       setBackdrop(playlist_index);
@@ -135,10 +139,11 @@ function hey(){
     Array.prototype.forEach.call(trackBtnArray, function(btn) {
     btn.addEventListener("click", function() {
         var beat = btn.getAttribute('beat');
+        playlist_index = playlist.indexOf(beat);
+        current_track = titles[playlist_index];
+        playlist_status.innerHTML = titles[playlist_index];
         audio.src = beat;
-        var beatIndex = playlist.indexOf(beat);
-        setBackdrop(beatIndex);
-        playlist_status.innerHTML = titles[beatIndex];
+        setBackdrop(playlist_index);
         audio.play();
     });
 });
@@ -213,12 +218,58 @@ function hey(){
       analyser = context.createAnalyser(); // AnalyserNode method
       canvas = document.getElementById('visualiser');
       ctx = canvas.getContext('2d');
+      dpi = window.devicePixelRatio;
+
+
+
       // Re-route audio playback into the processing graph of the AudioContext
       source = context.createMediaElementSource(audio);
       source.connect(analyser);
       analyser.connect(context.destination);
       frameLooper();
       console.log('grrrrr')
+    }
+
+    function fix_dpi() {
+      //get CSS height
+      //the + prefix casts it to an integer
+      //the slice method gets rid of "px"
+      let style_height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+
+      //get CSS width
+      let style_width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+      //scale the canvas
+      canvas.setAttribute('height', style_height * dpi);
+      canvas.setAttribute('width', style_width * dpi);
+    }
+
+    function frameLooper(){
+
+      window.requestAnimationFrame(frameLooper);
+      fbc_array = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(fbc_array);
+      fix_dpi();
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = 'destination-out'
+      ctx.fillStyle = 'red'; // Color of the bars
+      bars = 400;
+      ctx.font = "800 6em Open Sans";
+      ctx.fillStyle = "red";
+      ctx.textAlign = "center";
+
+      ctx.fillText(current_track.toUpperCase(), canvas.width/2, canvas.height/2);
+      for (var i = 0; i < bars; i++) {
+        bar_x = i * 3;
+        bar_width = 8;
+        bar_height = -(fbc_array[i]);
+        //  fillRect( x, y, width, height ) // Explanation of the parameters below
+        ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
+
+        // console.log('wooop')
+      }
     }
 
     initMp3Player();
@@ -244,22 +295,7 @@ window.addEventListener("load", () => {
 })
 
 
-function frameLooper(){
-  window.requestAnimationFrame(frameLooper);
-  fbc_array = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(fbc_array);
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-  ctx.fillStyle = 'red'; // Color of the bars
-  bars = 100;
-  for (var i = 0; i < bars; i++) {
-    bar_x = i * 3;
-    bar_width = 2;
-    bar_height = -(fbc_array[i] / 2);
-    //  fillRect( x, y, width, height ) // Explanation of the parameters below
-    ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
-    // console.log('wooop')
-  }
-}
+
 
 
 // Cart stuff

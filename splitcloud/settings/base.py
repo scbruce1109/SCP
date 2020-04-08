@@ -91,6 +91,9 @@ STRIPE_SECRET_KEY = creds.get('STRIPE_SECRET_KEY', 'sk_test_HAJZxFu1o25Igf8UvjOy
 PAYPAL_CLIENT_ID = creds.get('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = creds.get('PAYPAL_CLIENT_SECRET')
 
+IG_USERNAME = creds.get('IG_USERNAME')
+IG_PASSWORD = creds.get('IG_PASSWORD')
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

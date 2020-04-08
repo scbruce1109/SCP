@@ -3,10 +3,14 @@ import json
 import re
 import requests
 from django.conf import settings
+import instaloader
 
 MAILCHIMP_API_KEY = getattr(settings, "MAILCHIMP_API_KEY", None)
 MAILCHIMP_DATA_CENTER = getattr(settings, "MAILCHIMP_DATA_CENTER", None)
 MAILCHIMP_EMAIL_LIST_ID = getattr(settings, "MAILCHIMP_EMAIL_LIST_ID", None)
+
+IG_USERNAME =getattr(settings, "IG_USERNAME", None)
+IG_PASSWORD =getattr(settings, "IG_PASSWORD", None)
 
 
 def get_subscriber_hash(member_email):
@@ -89,4 +93,18 @@ class Mailchimp(object):
 
 
 
-        return ""
+#         return ""
+#
+# def insta_login(user
+
+def user_follows_ig(user):
+    L = instaloader.Instaloader()
+    L.login(IG_USERNAME, IG_PASSWORD)
+    profile = instaloader.Profile.from_username(L.context, IG_USERNAME)
+    followers = []
+    for f in profile.get_followers():
+        followers.append(f.username)
+    if user in followers:
+        return True
+    else:
+        return False
