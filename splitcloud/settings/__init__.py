@@ -1,3 +1,6 @@
 from .base import *
 
-from .local_aws import *
+try:
+    from .local_aws_settings import *
+except:
+    from .production_settings import *

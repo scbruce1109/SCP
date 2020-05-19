@@ -16,33 +16,23 @@ import json
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-with open("creds.json", "r") as creds:
-    creds = json.load(creds)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = creds.get("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'chpowell1210@gmail.com'
-EMAIL_HOST_PASSWORD = creds.get('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Python ecommerce <chpowell1210@gmail.com>"
-BASE_URL = "127.0.0.1:8000"
 
-MANAGERS = (
-    ('Steve', 'chpowell1210@gmail.com'),
-)
 
-ADMINS = MANAGERS
+
+
 
 # Application definition
 
@@ -55,18 +45,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # my apps
-    'accounts',
-    'addresses',
-    'analytics',
-    'beatstore',
-    'billing',
-    'carts',
-    'marketing',
-    'orders',
-    'products',
-    'search',
-    'tags',
-    'transactional',
+    # 'accounts',
+    # 'addresses',
+    # 'analytics',
+    # 'beatstore',
+    # 'billing',
+    # 'carts',
+    # 'marketing',
+    # 'orders',
+    # 'products',
+    # 'search',
+    # 'tags',
+    # 'transactional',
 
 ]
 
@@ -76,23 +66,14 @@ LOGIN_URL_REDIRECT = '/'
 LOGOUT_URL = '/logout/'
 LOGOUT_REDIRECT_URL = '/login'
 
-MAILCHIMP_API_KEY = creds.get('MAILCHIMP_API_KEY')
-MAILCHIMP_DATA_CENTER = "us20"
-MAILCHIMP_EMAIL_LIST_ID = creds.get('MAILCHIMP_EMAIL_LIST_ID')
 
-SENDINBLUE_API_KEY_V3 = creds.get('SENDINBLUE_API_KEY_V3')
 
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
-STRIPE_PUB_KEY = creds.get('STRIPE_PUB_KEY', 'pk_test_NDDVONYz0ZEtqGhrmOtnDKxw')
-STRIPE_SECRET_KEY = creds.get('STRIPE_SECRET_KEY', 'sk_test_HAJZxFu1o25Igf8UvjOyI2ZK')
 
-PAYPAL_CLIENT_ID = creds.get('PAYPAL_CLIENT_ID')
-PAYPAL_CLIENT_SECRET = creds.get('PAYPAL_CLIENT_SECRET')
 
-IG_USERNAME = creds.get('IG_USERNAME')
-IG_PASSWORD = creds.get('IG_PASSWORD')
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
