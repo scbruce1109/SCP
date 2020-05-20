@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['splitcloud.herokuapp.com', '.splitcloudproductions.com']
+ALLOWED_HOSTS = ['.splitcloudproductions.com']
 
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'chpowell1210@gmail.com'
