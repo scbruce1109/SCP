@@ -20,13 +20,13 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 
 from .views import home_page, new_home, BeatStoreView, about_page, services_page, contact_page
-from accounts.views import LoginView, RegisterView, GuestRegisterView
-from addresses.views import checkout_address_create_view, checkout_address_reuse_view
-from analytics.views import SalesView, SalesAjaxView
-from billing.views import payment_method_view, payment_method_create_view, paypal_transaction_complete_view
-from carts.views import cart_detail_api_view
-from marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView, SubscribeArtistView
-from orders.views import LibraryView
+# from accounts.views import LoginView, RegisterView, GuestRegisterView
+# from addresses.views import checkout_address_create_view, checkout_address_reuse_view
+# from analytics.views import SalesView, SalesAjaxView
+# from billing.views import payment_method_view, payment_method_create_view, paypal_transaction_complete_view
+# from carts.views import cart_detail_api_view
+# from marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView, SubscribeArtistView
+# from orders.views import LibraryView
 from django.conf.urls import url
 # from beatstore.views import BeatListView
 
