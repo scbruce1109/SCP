@@ -16,8 +16,7 @@ import json
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-with open("creds.json", "r") as creds:
-    creds = json.load(creds)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -26,23 +25,23 @@ with open("creds.json", "r") as creds:
 SECRET_KEY = creds.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['splitcloud.herokuapp.com', '.splitcloudproductions.com']
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'chpowell1210@gmail.com'
-EMAIL_HOST_PASSWORD = creds.get('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Python ecommerce <chpowell1210@gmail.com>"
-BASE_URL = "127.0.0.1:8000"
-
-MANAGERS = (
-    ('Steve', 'chpowell1210@gmail.com'),
-)
-
-ADMINS = MANAGERS
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'chpowell1210@gmail.com'
+# EMAIL_HOST_PASSWORD = creds.get('EMAIL_HOST_PASSWORD')
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = "Python ecommerce <chpowell1210@gmail.com>"
+# BASE_URL = "127.0.0.1:8000"
+#
+# MANAGERS = (
+#     ('Steve', 'chpowell1210@gmail.com'),
+# )
+#
+# ADMINS = MANAGERS
 
 # Application definition
 
@@ -77,20 +76,20 @@ LOGIN_URL_REDIRECT = '/'
 LOGOUT_URL = '/logout/'
 LOGOUT_REDIRECT_URL = '/login'
 
-MAILCHIMP_API_KEY = creds.get('MAILCHIMP_API_KEY')
-MAILCHIMP_DATA_CENTER = "us20"
-MAILCHIMP_EMAIL_LIST_ID = creds.get('MAILCHIMP_EMAIL_LIST_ID')
-
-SENDINBLUE_API_KEY_V3 = creds.get('SENDINBLUE_API_KEY_V3')
+# MAILCHIMP_API_KEY = creds.get('MAILCHIMP_API_KEY')
+# MAILCHIMP_DATA_CENTER = "us20"
+# MAILCHIMP_EMAIL_LIST_ID = creds.get('MAILCHIMP_EMAIL_LIST_ID')
+#
+# SENDINBLUE_API_KEY_V3 = creds.get('SENDINBLUE_API_KEY_V3')
 
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
-STRIPE_PUB_KEY = creds.get('STRIPE_PUB_KEY', 'pk_test_NDDVONYz0ZEtqGhrmOtnDKxw')
-STRIPE_SECRET_KEY = creds.get('STRIPE_SECRET_KEY', 'sk_test_HAJZxFu1o25Igf8UvjOyI2ZK')
-
-PAYPAL_CLIENT_ID = creds.get('PAYPAL_CLIENT_ID')
-PAYPAL_CLIENT_SECRET = creds.get('PAYPAL_CLIENT_SECRET')
+# STRIPE_PUB_KEY = creds.get('STRIPE_PUB_KEY')
+# STRIPE_SECRET_KEY = creds.get('STRIPE_SECRET_KEY')
+#
+# PAYPAL_CLIENT_ID = creds.get('PAYPAL_CLIENT_ID')
+# PAYPAL_CLIENT_SECRET = creds.get('PAYPAL_CLIENT_SECRET')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -138,6 +137,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
 # Password validation
@@ -191,9 +195,9 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
 
 PROTECTED_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "protected_media")
 
-from splitcloud.AWS.conf import *
-AWS_ACCESS_KEY_ID = creds.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = creds.get('AWS_SECRET_ACCESS_KEY')
+# from splitcloud.AWS.conf import *
+# AWS_ACCESS_KEY_ID = creds.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = creds.get('AWS_SECRET_ACCESS_KEY')
 
 CORS_REPLACE_HTTPS_REFERER      = True
 HOST_SCHEME                     = "https://"
