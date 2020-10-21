@@ -5,10 +5,11 @@
 {% url 'logout' as logout_url %}
 {% url 'register' as register_url %}
 {% url 'cart:home' as cart_url %}
+{% load static %}
 
 <div class="topnav" id="myTopnav">
   <div id='nav-logo-container'>
-    <h1>Split Cloud Productions</h1>
+    <img src="{% static 'img/logo.png' %}" class='img-fluid' />
     </div>
   <div id='nav-item-container' style='width:90%;text-align:center;margin:0 auto'>
   <a href="{{ home_url }}" class="active">Beats</a>

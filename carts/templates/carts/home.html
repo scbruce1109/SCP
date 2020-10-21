@@ -7,15 +7,15 @@
 <table class="table cart-table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Product Price</th>
+      <th scope="col">Item</th>
+      <th scope="col"></th>
+      <th scope="col">Price</th>
     </tr>
   </thead>
   <tbody class='cart-body'>
     {% for product in cart.products.all %}
     <tr class='cart-product'>
-      <th scope="row">{{ forloop.counter }}</th>
+      <th scope="row"></th>
       <td><a href='{{ product.get_absolute_url }}'>{{ product.title }}</a>
 
 
@@ -27,10 +27,10 @@
       <td colspan="2"></td>
       <td><b>Subtotal</b>$<span class='cart-subtotal'> {{cart.subtotal }}</span></td>
     </tr>
-    <tr>
+    <!-- <tr>
       <td colspan="2"></td>
       <td><b>Total</b>$<span class='cart-total'> {{cart.total }}</span></td>
-    </tr>
+    </tr> -->
     <tr>
       <td colspan="2"></td>
       <td><a class='btn btn-lg btn-success' href='{% url "cart:checkout" %}'>Checkout</a></td>

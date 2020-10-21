@@ -1,32 +1,40 @@
 
-
-function userFormToggle() {
-  var loginBtn = document.getElementById('login-btn');
-  var loginForm = document.getElementById('login-form');
-  var guestRegisterForm = document.getElementById('guest-register-form');
-  var guestRegisterBtn = document.getElementById('guest-register-btn');
-  loginBtn.addEventListener('click', function() {
-    loginForm.style.display = 'block';
-    guestRegisterForm.style.display = 'none';
-    console.log('login')
-  })
-
-  guestRegisterBtn.addEventListener('click', function() {
-    guestRegisterForm.style.display = 'block';
-    loginForm.style.display = 'none';
-    console.log('guest')
-  })
-}
+//////////mswitches between login and guest register form -- deactivated until we add user functionality
+// function userFormToggle() {
+//   var loginBtn = document.getElementById('login-btn');
+//   var loginForm = document.getElementById('login-form');
+//   var guestRegisterForm = document.getElementById('guest-register-form');
+//   var guestRegisterBtn = document.getElementById('guest-register-btn');
+//   loginBtn.addEventListener('click', function() {
+//     loginForm.style.display = 'block';
+//     guestRegisterForm.style.display = 'none';
+//     console.log('login')
+//   })
+//
+//   guestRegisterBtn.addEventListener('click', function() {
+//     guestRegisterForm.style.display = 'block';
+//     loginForm.style.display = 'none';
+//     console.log('guest')
+//   })
+// }
 
 function userInfoToggle() {
   var infoEditBtn = document.getElementById('info-edit-btn');
   var infoForms = document.getElementById('info-forms');
   var infoDisplay = document.getElementById('info-display');
+  var billingAddressForm = document.getElementById('billing-address-form');
+  var billingAddressDisplay = document.getElementById('billing-address-display');
+  var paymentForms = document.getElementById('payment-forms');
+  var paymentMethods = document.getElementById('payment-methodss');
 
   if (infoEditBtn) {
     infoEditBtn.addEventListener('click', function() {
       infoForms.style.display='table';
       infoDisplay.style.display = 'none';
+      billingAddressForm.style.display = 'none';
+      billingAddressDisplay.style.display = 'none';
+      paymentForms.style.display = 'none';
+      paymentMethods.style.display = 'none';
     })
   }
 }
@@ -135,7 +143,7 @@ function discountCodeApply() {
 
 window.addEventListener("load", () => {
 
-  userFormToggle();
+  // userFormToggle();
   userInfoToggle();
   billingAddressToggle();
   paymentMethodSwitch();

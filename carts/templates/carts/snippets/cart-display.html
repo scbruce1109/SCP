@@ -22,7 +22,7 @@
     ${{ product.price }}
     </div>
   </div>
-  {% include 'carts/snippets/remove-product.html' with product_id=product.id %}
+  <!-- {% include 'carts/snippets/remove-product.html' with product_id=product.id %} -->
   {% endfor %}
 
   {% url "cart:apply-discount" as apply_discount_url %}
